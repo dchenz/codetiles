@@ -1,0 +1,31 @@
+.left-drawer-container {
+    width: 300px !important;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    border-right: solid 2.5px lightgray;
+    z-index: 999;
+    transition: margin-left 500ms;
+}
+
+.left-drawer-container .toggle-collapse-btn {
+    width: 25px;
+    height: 100px;
+    background-color: lightgrey;
+    position: absolute;
+    top: 15px;
+    right: -25px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.collapse-left-open {
+    margin-left: 0 !important;
+}
+
+.collapse-left-closed {
+    margin-left: -300px !important;
+}
