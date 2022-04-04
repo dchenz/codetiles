@@ -12,7 +12,7 @@ export default function App(): JSX.Element {
   return (
     <CanvasContext.Provider value={{ layoutCtx, setLayoutCtx }}>
       <UserControls />
-      <ZoomableCanvasArea />
+      <ZoomableCanvasArea cellSize={50} rowCount={80} columnCount={100} />
     </CanvasContext.Provider>
   );
 }

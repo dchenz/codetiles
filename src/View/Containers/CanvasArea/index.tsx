@@ -2,9 +2,15 @@ import React from "react";
 import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import CanvasArea from "./Canvas";
 
-export default function ZoomableCanvasArea(): JSX.Element {
-  const canvasWidth = window.innerWidth * 4;
-  const canvasHeight = window.innerHeight * 4;
+type PropTypes = {
+  cellSize: number,
+  rowCount: number,
+  columnCount: number
+}
+
+export default function ZoomableCanvasArea({ cellSize, rowCount, columnCount }: PropTypes): JSX.Element {
+  const canvasWidth = cellSize * columnCount;
+  const canvasHeight = cellSize * rowCount;
   const initX = 0.5;
   const initY = 0.5;
   return (
@@ -20,6 +26,7 @@ export default function ZoomableCanvasArea(): JSX.Element {
         <CanvasArea
           width={canvasWidth}
           height={canvasHeight}
+          cellSize={cellSize}
         >
         </CanvasArea>
       </TransformComponent>

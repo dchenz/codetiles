@@ -6,10 +6,11 @@ let observer: MutationObserver | null = null;
 type PropTypes = {
   width: number,
   height: number,
+  cellSize: number,
   children?: React.ReactNode
 }
 
-export default function CanvasArea({ width, height, children }: PropTypes): JSX.Element {
+export default function CanvasArea({ width, height, cellSize, children }: PropTypes): JSX.Element {
 
   const { setLayoutCtx } = useContext(CanvasContext);
   const ref = useRef<SVGSVGElement | null>(null);
@@ -24,15 +25,18 @@ export default function CanvasArea({ width, height, children }: PropTypes): JSX.
     }
   }, [ref, observer]);
 
+  const outerGridSize = Math.floor(cellSize / 5) * 5;
+  const innerGridSize = Math.floor(outerGridSize / 5);
+
   return (
     <svg ref={ref} style={{ width, height, backgroundColor: "#f5f5f5" }} >
       <defs>
-        <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
-          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" strokeWidth="0.5" />
+        <pattern id="smallGrid" width={innerGridSize} height={innerGridSize} patternUnits="userSpaceOnUse">
+          <path d={`M ${innerGridSize} 0 L 0 0 0 ${innerGridSize}`} fill="none" stroke="gray" strokeWidth="0.5" />
         </pattern>
-        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-          <rect width="50" height="50" fill="url(#smallGrid)" />
-          <path d="M 50 0 L 0 0 0 50" fill="none" stroke="gray" strokeWidth="1" />
+        <pattern id="grid" width={outerGridSize} height={outerGridSize} patternUnits="userSpaceOnUse">
+          <rect width={outerGridSize} height={outerGridSize} fill="url(#smallGrid)" />
+          <path d={`M ${outerGridSize} 0 L 0 0 0 ${outerGridSize}`} fill="none" stroke="gray" strokeWidth="1" />
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#grid)" />
