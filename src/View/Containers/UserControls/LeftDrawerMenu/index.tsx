@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { ChevronCompactLeft, ChevronCompactRight } from "react-bootstrap-icons";
 import "./styles.css";
+import TileList from "./TileList";
 
-export default function LeftDrawerMenu() {
-  const [isCollapsed, setCollapsed] = useState(false);
+export default function LeftDrawerMenu(): JSX.Element {
+  const [isCollapsed, setCollapsed] = useState<boolean>(false);
   const collapseStyleCls = isCollapsed ? "collapse-left-closed" : "collapse-left-open";
   return (
     <React.Fragment>
@@ -16,12 +17,7 @@ export default function LeftDrawerMenu() {
         </Row>
         <Row>
           <Col>
-            <p>Add tile</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <p>Add control</p>
+            <TileList />
           </Col>
         </Row>
         <div className="toggle-collapse-btn" onClick={() => setCollapsed(!isCollapsed)}>

@@ -8,6 +8,7 @@
     border-right: solid 2.5px lightgray;
     z-index: 999;
     transition: margin-left 500ms;
+    user-select: none;
 }
 
 .left-drawer-container .toggle-collapse-btn {
@@ -28,4 +29,19 @@
 
 .collapse-left-closed {
     margin-left: -300px !important;
+}
+
+.tile-list-item {
+    font-size: smaller;
+    cursor: pointer;
+    transition: background-color 300ms;
+}
+
+.tile-list-item:hover {
+    background-color: #f5f5f5;
+}
+
+.scrollable-list {
+    max-height: 300px;
+    overflow-y: scroll;
 }

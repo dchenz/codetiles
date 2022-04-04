@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "./styles.css";
 
-export default function BottomDrawerMenu() {
-  const [isCollapsed, setCollapsed] = useState(true);
+export default function BottomDrawerMenu(): JSX.Element {
+  const [isCollapsed, setCollapsed] = useState<boolean>(true);
   const collapseStyleCls = isCollapsed ? "collapse-bottom-closed" : "collapse-bottom-open";
   return (
     <Container fluid className={"bottom-drawer-container " + collapseStyleCls}>

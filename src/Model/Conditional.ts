@@ -1,33 +1,44 @@
 import { ProgramObject } from "./ProgramObject";
+import { Serializable } from "./Serializable";
 
 export class Conditional extends ProgramObject {
 
-  condition: string;
-  elseIfs: Conditional[];
-  elseThen: Conditional;
-  nestedScope: ProgramObject[];
+  ifBlock: ConditionalBlock;
+  elseIfBlocks: ConditionalBlock[];
+  elseBlock: ConditionalBlock;
 
-  constructor(title: string, condition: string, nestedScope: ProgramObject[]) {
-    super(title);
-    this.condition = condition;
-    this.nestedScope = nestedScope;
-    this.elseIfs = [];
-    this.elseThen = new Conditional("", "true", []);
+  constructor(title: string) {
+    super("conditional", title);
+    this.ifBlock = new ConditionalBlock();
+    this.elseIfBlocks = [];
+    this.elseBlock = new ConditionalBlock();
   }
 
   toObject() {
     const objRep = super.toObject();
-    objRep.condition = this.condition;
-    objRep.elseIfs = [];
-    for (const cond of this.elseIfs) {
-      objRep.elseIfs.push(cond.toObject());
-    }
-    objRep.elseThen = this.elseThen.toObject();
-    objRep.nestedScope = [];
-    for (const nestedObj of this.nestedScope) {
-      objRep.nestedScope.push(nestedObj.toObject());
-    }
+    objRep["if"] = this.ifBlock.toObject();
+    objRep["else_ifs"] = this.elseIfBlocks.map(b => b.toObject());
+    objRep["else"] = this.elseBlock.toObject();
     return objRep;
+  }
+
+}
+
+class ConditionalBlock implements Serializable {
+
+  condition: string;
+  nestedScope: ProgramObject[];
+
+  constructor() {
+    this.condition = "";
+    this.nestedScope = [];
+  }
+
+  toObject(): Record<string, unknown> {
+    return {
+      "condition": this.condition,
+      "nested_scope": this.nestedScope
+    };
   }
 
 }

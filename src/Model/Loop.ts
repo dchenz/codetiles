@@ -5,19 +5,16 @@ export class Loop extends ProgramObject {
   condition: string;
   nestedScope: ProgramObject[];
 
-  constructor(title: string, condition: string) {
-    super(title);
-    this.condition = condition;
+  constructor(title: string) {
+    super("loop", title);
+    this.condition = "";
     this.nestedScope = [];
   }
 
-  toObject() {
+  toObject(): Record<string, unknown> {
     const objRep = super.toObject();
-    objRep.condition = this.condition;
-    objRep.nestedScope = [];
-    for (const nestedObj of this.nestedScope) {
-      objRep.nestedScope.push(nestedObj.toObject());
-    }
+    objRep["condition"] = this.condition;
+    objRep["nested_scope"] = this.nestedScope.map(s => s.toObject());
     return objRep;
   }
 

@@ -1,3 +1,3 @@
 export interface Serializable {
-  toObject: () => object
+  toObject: () => Record<string, unknown>
 }
