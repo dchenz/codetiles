@@ -7,8 +7,8 @@ export class Conditional extends ProgramObject {
   elseIfBlocks: ConditionalBlock[];
   elseBlock: ConditionalBlock;
 
-  constructor(title: string) {
-    super("conditional", title);
+  constructor() {
+    super("conditional");
     this.ifBlock = new ConditionalBlock();
     this.elseIfBlocks = [];
     this.elseBlock = new ConditionalBlock();

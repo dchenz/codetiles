@@ -11,10 +11,10 @@ export abstract class ProgramObject implements Serializable {
   outboundConnectors: Connector[];
   returnType: string;
 
-  constructor(type: string, title: string) {
+  constructor(type: string) {
     this.id = uuid();
     this.type = type;
-    this.title = title;
+    this.title = "";
     this.inboundConnectors = [];
     this.outboundConnectors = [];
     this.returnType = "null";

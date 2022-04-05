@@ -3,7 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./styles.css";
 
 export default function BottomDrawerMenu(): JSX.Element {
-  const [isCollapsed, setCollapsed] = useState<boolean>(true);
+  const [isCollapsed] = useState<boolean>(true);
   const collapseStyleCls = isCollapsed ? "collapse-bottom-closed" : "collapse-bottom-open";
   return (
     <Container fluid className={"bottom-drawer-container " + collapseStyleCls}>

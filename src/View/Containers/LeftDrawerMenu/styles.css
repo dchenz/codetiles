@@ -34,7 +34,11 @@
 .tile-list-item {
     font-size: smaller;
     cursor: pointer;
-    transition: background-color 300ms;
+    transition: background-color 200ms;
+}
+
+.tile-selected {
+    background-color: #ddebff !important;
 }
 
 .tile-list-item:hover {

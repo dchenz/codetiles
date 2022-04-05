@@ -5,8 +5,8 @@ export class Loop extends ProgramObject {
   condition: string;
   nestedScope: ProgramObject[];
 
-  constructor(title: string) {
-    super("loop", title);
+  constructor() {
+    super("loop");
     this.condition = "";
     this.nestedScope = [];
   }
