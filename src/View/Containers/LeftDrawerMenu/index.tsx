@@ -27,7 +27,7 @@ export default function LeftDrawerMenu(): JSX.Element {
           className="toggle-collapse-btn"
           onClick={() => {
             setCollapsed(!isCollapsed);
-            setSelectionCtx({ selected: "" });
+            setSelectionCtx({ selected: null });
           }}
         >
           {

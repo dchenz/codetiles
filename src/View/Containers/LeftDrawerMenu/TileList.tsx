@@ -1,20 +1,12 @@
 import React, { useContext } from "react";
 import { ListGroup, Tab, Tabs } from "react-bootstrap";
-import { ArrowRepeat, ArrowRightCircle, Diagram2 } from "react-bootstrap-icons";
 import { SelectionContext } from "../../Context/SelectionContext";
+import { BasicTiles, ControlTiles, TileManifestType } from "../TileManifest";
 import "./styles.css";
-
-const iconSize = 24;
 
 type TileListPropTypes = {
   title: string,
-  items: ProgramObjectTile[]
-}
-
-type ProgramObjectTile = {
-  icon: JSX.Element,
-  name: string,
-  itemType: string
+  items: TileManifestType[]
 }
 
 export default function TileListWrapper(): JSX.Element {
@@ -26,31 +18,10 @@ export default function TileListWrapper(): JSX.Element {
       onSelect={() => setSelectionCtx({ selected: null })}
     >
       <Tab title="Basic" eventKey="Basic">
-        <TileList title="Basic"
-          items={[
-            {
-              icon: <ArrowRightCircle size={iconSize} />,
-              name: "Test Tile 1",
-              itemType: "loop"
-            }
-          ]}
-        />
+        <TileList title="Basic" items={BasicTiles} />
       </Tab>
       <Tab title="Control" eventKey="Control">
-        <TileList title="Control"
-          items={[
-            {
-              icon: <Diagram2 size={iconSize} />,
-              name: "Conditional Block",
-              itemType: "conditional"
-            },
-            {
-              icon: <ArrowRepeat size={iconSize} />,
-              name: "Loop Block",
-              itemType: "loop"
-            },
-          ]}
-        />
+        <TileList title="Control" items={ControlTiles} />
       </Tab>
     </Tabs>
   );
@@ -70,7 +41,7 @@ function TileList({ items }: TileListPropTypes): JSX.Element {
   );
 }
 
-function TileListItem({ icon, name, itemType }: ProgramObjectTile): JSX.Element {
+function TileListItem({ icon, name, itemType }: TileManifestType): JSX.Element {
   // Select tile on click
   const { selectionCtx, setSelectionCtx } = useContext(SelectionContext);
   const isItemSelected = itemType === selectionCtx.selected;

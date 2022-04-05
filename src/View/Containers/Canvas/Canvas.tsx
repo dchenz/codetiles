@@ -3,6 +3,8 @@ import { nameToObject } from "../../../Model/ObjectFactory";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { SelectionContext } from "../../Context/SelectionContext";
 import { TilesContext } from "../../Context/TilesContext";
+import { nameToTile } from "../TileManifest";
+import Tile from "./Tile";
 import { GridPropTypes } from "./types";
 
 let observer: MutationObserver | null = null;
@@ -32,55 +34,73 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
       const pY = ((e.clientY ?? 0) - y) / sc;
       setPosCtx({
         tileX: Math.floor(pX / cellSize),
-        tileY: Math.floor(pY / cellSize)
+        tileY: Math.floor(pY / cellSize),
+        x: pX,
+        y: pY
       });
     });
   }, []);
 
-  const innerGridSize = Math.floor(cellSize / 5);
   const width = cellSize * columnCount;
   const height = cellSize * rowCount;
+
+  const tileSize = cellSize * 5;
+
+  const onPlacement = () => {
+    const tileType = selectionCtx.selected;
+    if (tileType) {
+      const tModel = nameToObject(tileType);
+      const tMafst = nameToTile(tileType);
+      const tile = {
+        model: tModel,
+        view:
+          <Tile
+            key={tModel.id}
+            width={tileSize}
+            height={tileSize}
+            x={posCtx.x - tileSize / 2}
+            y={posCtx.y - tileSize / 2}
+            model={tModel}
+            manifest={tMafst}
+          />
+      };
+      setTilesCtx([...tilesCtx, tile]);
+      // Clear selection on placement
+      setSelectionCtx({ selected: null });
+    }
+  };
 
   return (
     <svg
       ref={ref}
       style={{ width, height, backgroundColor: "#f5f5f5" }}
-      onClick={() => {
-        const tileType = selectionCtx.selected;
-        if (tileType) {
-          const tile = nameToObject(tileType);
-          setTilesCtx([...tilesCtx, tile]);
-          // Clear selection on placement
-          setSelectionCtx({ selected: null });
-        }
-      }}
+      onClick={onPlacement}
     >
       <defs>
-        <pattern id="smallGrid" width={innerGridSize} height={innerGridSize} patternUnits="userSpaceOnUse">
-          <path d={`M ${innerGridSize} 0 L 0 0 0 ${innerGridSize}`} fill="none" stroke="gray" strokeWidth="0.5" />
-        </pattern>
         <pattern id="grid" width={cellSize} height={cellSize} patternUnits="userSpaceOnUse">
-          <rect width={cellSize} height={cellSize} fill="url(#smallGrid)" />
           <path d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`} fill="none" stroke="gray" strokeWidth="1" />
         </pattern>
       </defs>
-      {
-        selectionCtx.selected != null ?
-          <rect
-            x={posCtx.tileX * cellSize}
-            y={posCtx.tileY * cellSize}
-            width={cellSize}
-            height={cellSize}
-            fill="none"
-            stroke="red"
-            strokeWidth="1"
-          /> : null
-      }
       <rect
         width="100%"
         height="100%"
         fill="url(#grid)"
       />
+      {
+        tilesCtx.map(({ view }) => view)
+      }
+      {
+        selectionCtx.selected != null ?
+          <rect
+            x={posCtx.x - tileSize / 2}
+            y={posCtx.y - tileSize / 2}
+            width={tileSize}
+            height={tileSize}
+            fill="none"
+            stroke="red"
+            strokeWidth="1"
+          /> : null
+      }
     </svg>
   );
 

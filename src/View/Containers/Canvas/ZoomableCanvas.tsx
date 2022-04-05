@@ -8,30 +8,22 @@ export default function ZoomableCanvas({ cellSize, rowCount, columnCount }: Grid
   const canvasHeight = cellSize * rowCount;
   const initX = 0.5;
   const initY = 0.5;
-
-
-
-
   return (
-    <React.Fragment>
-
-      <TransformWrapper
-        initialScale={1}
-        centerOnInit={true}
-        initialPositionX={canvasWidth * initX}
-        initialPositionY={canvasHeight * initY}
-        minScale={0.25}
-        maxScale={4}
-      >
-        <TransformComponent wrapperStyle={{ width: "100vw", height: "100vh" }}>
-          <GridBackdrop
-            rowCount={rowCount}
-            columnCount={columnCount}
-            cellSize={cellSize}
-          />
-        </TransformComponent>
-      </TransformWrapper>
-
-    </React.Fragment>
+    <TransformWrapper
+      initialScale={1}
+      centerOnInit={true}
+      initialPositionX={canvasWidth * initX}
+      initialPositionY={canvasHeight * initY}
+      minScale={0.25}
+      maxScale={4}
+    >
+      <TransformComponent wrapperStyle={{ width: "100vw", height: "100vh" }}>
+        <GridBackdrop
+          rowCount={rowCount}
+          columnCount={columnCount}
+          cellSize={cellSize}
+        />
+      </TransformComponent>
+    </TransformWrapper>
   );
 }

@@ -3,12 +3,17 @@ import { ProgramObject } from "../../Model/ProgramObject";
 
 const contextState = {
   tilesCtx: [],
-  setTilesCtx: (_: ProgramObject[]) => { _ == _; }
+  setTilesCtx: (_: TilesType[]) => { _ == _; }
 };
 
 export const TilesContext = createContext<TilesCtxType>(contextState);
 
+export type TilesType = {
+  model: ProgramObject,
+  view: JSX.Element
+}
+
 export type TilesCtxType = {
-  tilesCtx: ProgramObject[],
-  setTilesCtx: (_: ProgramObject[]) => void
+  tilesCtx: TilesType[],
+  setTilesCtx: (_: TilesType[]) => void
 }
