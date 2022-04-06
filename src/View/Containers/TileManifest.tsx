@@ -24,7 +24,7 @@ export const BasicTiles: TileManifestType[] = [
     itemType: "variable_init",
     model: InitVariable,
     attributes: {
-      fill: "lightyellow"
+      fill: "#ffffe6"
     }
   }
 ];
@@ -36,7 +36,7 @@ export const ControlTiles: TileManifestType[] = [
     itemType: "conditional",
     model: Conditional,
     attributes: {
-      fill: "lightblue"
+      fill: "#d1f4ff"
     }
   },
   {
@@ -45,7 +45,7 @@ export const ControlTiles: TileManifestType[] = [
     itemType: "loop",
     model: Loop,
     attributes: {
-      fill: "honeydew"
+      fill: "#dbffe1"
     }
   }
 ];
