@@ -34,11 +34,11 @@ export default function Tile({ manifest, ...props }: TilePropTypes) {
         interactionCtx.canvas.isDraggingTile = true;
         setInteractionCtx(interactionCtx);
       }}
-      onDrag={() => {
+      onDrag={(e, data) => {
         console.log("on drag:", coord);
         setCoord({
-          x: posCtx.x - props.width * 0.5,
-          y: posCtx.y - props.height * 0.5
+          x: data.x,
+          y: data.y
         });
       }}
       onStop={() => {
