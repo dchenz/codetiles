@@ -11,7 +11,8 @@ const contextState = {
     tileX: 0,
     tileY: 0,
     x: 0,
-    y: 0
+    y: 0,
+    zoom: 1
   },
   setPosCtx: (_: GridPositionType) => { _ == _; }
 };
@@ -27,5 +28,6 @@ export type GridPositionType = {
   tileX: number,
   tileY: number,
   x: number,
-  y: number
+  y: number,
+  zoom: number
 }

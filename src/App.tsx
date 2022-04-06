@@ -11,7 +11,8 @@ export default function App(): JSX.Element {
     tileX: 0,
     tileY: 0,
     x: 0,
-    y: 0
+    y: 0,
+    zoom: 1
   });
   const [tilesCtx, setTilesCtx] = useState<TilesType[]>([]);
   const [interactionCtx, setInteractionCtx] = useState<InteractionType>({
@@ -19,6 +20,7 @@ export default function App(): JSX.Element {
       selectedTile: null
     },
     canvas: {
+      ref: null,
       selectedTile: null,
       isDraggingTile: false
     }
@@ -27,7 +29,7 @@ export default function App(): JSX.Element {
     <InteractionContext.Provider value={{ interactionCtx, setInteractionCtx }}>
       <TilesContext.Provider value={{ tilesCtx, setTilesCtx }}>
         <GridPositionContext.Provider value={{ posCtx, setPosCtx }}>
-          <MouseTracker {...posCtx} />
+          <MouseTracker />
           <LeftDrawerMenu />
           <Canvas cellSize={25} rowCount={100} columnCount={200} />
         </GridPositionContext.Provider>

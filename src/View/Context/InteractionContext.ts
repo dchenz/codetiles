@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { ReactZoomPanPinchRef } from "react-zoom-pan-pinch";
 import { ProgramObject } from "../../Model/ProgramObject";
 
 /*
@@ -11,6 +12,7 @@ const contextState = {
       selectedTile: null
     },
     canvas: {
+      ref: null,
       selectedTile: null,
       isDraggingTile: false
     }
@@ -30,6 +32,7 @@ export type InteractionType = {
     selectedTile: string | null
   },
   canvas: {
+    ref: ReactZoomPanPinchRef | null,
     selectedTile: ProgramObject | null,
     isDraggingTile: boolean
   }

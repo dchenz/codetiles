@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { GridPositionContext } from "../../Context/GridPositionContext";
+import { GridPositionContext, GridPositionType } from "../../Context/GridPositionContext";
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { getTileTemplate } from "../TileManifest";
 import Tile from "./Tile";
@@ -7,9 +7,11 @@ import { GridPropTypes } from "./types";
 import { InteractionContext } from "../../Context/InteractionContext";
 
 let observer: MutationObserver | null = null;
-let x = 0;
-let y = 0;
-let sc = 1;
+let ofsX = 0; // Width of canvas outside of viewport
+let ofsY = 0; // Height of canvas outside of viewport
+let sc = 1; // Zoom scale factor
+let mX = 0; // Mouse X position in viewport
+let mY = 0; // Mouse Y position in viewport
 
 export default function Canvas({ rowCount, columnCount, cellSize }: GridPropTypes): JSX.Element {
   const ref = useRef<SVGSVGElement | null>(null);
@@ -29,14 +31,9 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
 
   useEffect(() => {
     document.body.addEventListener("mousemove", (e: MouseEventInit) => {
-      const pX = ((e.clientX ?? 0) - x) / sc;
-      const pY = ((e.clientY ?? 0) - y) / sc;
-      setPosCtx({
-        tileX: Math.floor(pX / cellSize),
-        tileY: Math.floor(pY / cellSize),
-        x: pX,
-        y: pY
-      });
+      mX = e.clientX ?? 0;
+      mY = e.clientY ?? 0;
+      updateCanvasPositionState(setPosCtx, cellSize);
     });
   }, []);
 
@@ -106,6 +103,18 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
 
 }
 
+export function updateCanvasPositionState(updateState: (_: GridPositionType) => void, cellSize: number) {
+  const pX = (mX - ofsX) / sc;
+  const pY = (mY - ofsY) / sc;
+  updateState({
+    tileX: Math.floor(pX / cellSize),
+    tileY: Math.floor(pY / cellSize),
+    x: pX,
+    y: pY,
+    zoom: sc
+  });
+}
+
 function updateContextOnMutation(mutations: MutationRecord[]) {
   const cssStylePtn = /^translate3d\((-?\d+(\.\d+)?)px, (-?\d+(\.\d+)?)px, (-?\d+(\.\d+)?)px\) scale\((-?\d+(\.\d+)?)\)/;
   const styleMutations = mutations.filter((m) => m.type == "attributes" && m.attributeName == "style");
@@ -116,8 +125,8 @@ function updateContextOnMutation(mutations: MutationRecord[]) {
       if (groups == null) {
         throw 1;
       }
-      x = parseFloat(groups[1]);
-      y = parseFloat(groups[3]);
+      ofsX = parseFloat(groups[1]);
+      ofsY = parseFloat(groups[3]);
       sc = parseFloat(groups[7]);
 
     } catch (e) {
