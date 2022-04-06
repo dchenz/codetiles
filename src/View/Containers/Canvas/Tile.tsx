@@ -11,7 +11,7 @@ type TilePropTypes = {
   manifest: TileManifestType
 }
 
-const iconSize = 48;
+const iconSize = 42;
 
 export default function Tile({ manifest, ...props }: TilePropTypes) {
   const tileIcon = React.cloneElement(manifest.icon, {
@@ -33,7 +33,7 @@ export default function Tile({ manifest, ...props }: TilePropTypes) {
         fontSize={16}
         color="#000000"
       >
-        {manifest.name}
+        {manifest.displayName}
       </text>
       {tileIcon}
     </g>

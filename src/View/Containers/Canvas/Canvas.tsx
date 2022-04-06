@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { nameToObject } from "../../../Model/ObjectFactory";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { SelectionContext } from "../../Context/SelectionContext";
 import { TilesContext } from "../../Context/TilesContext";
-import { nameToTile } from "../TileManifest";
+import { getTileTemplate } from "../TileManifest";
 import Tile from "./Tile";
 import { GridPropTypes } from "./types";
 
@@ -49,8 +48,8 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
   const onPlacement = () => {
     const tileType = selectionCtx.selected;
     if (tileType) {
-      const tModel = nameToObject(tileType);
-      const tMafst = nameToTile(tileType);
+      const tMafst = getTileTemplate(tileType);
+      const tModel = new tMafst.model();
       const tile = {
         model: tModel,
         view:

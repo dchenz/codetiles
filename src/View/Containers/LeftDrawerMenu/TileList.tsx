@@ -41,7 +41,7 @@ function TileList({ items }: TileListPropTypes): JSX.Element {
   );
 }
 
-function TileListItem({ icon, name, itemType }: TileManifestType): JSX.Element {
+function TileListItem({ icon, displayName, itemType }: TileManifestType): JSX.Element {
   // Select tile on click
   const { selectionCtx, setSelectionCtx } = useContext(SelectionContext);
   const isItemSelected = itemType === selectionCtx.selected;
@@ -58,7 +58,7 @@ function TileListItem({ icon, name, itemType }: TileManifestType): JSX.Element {
       onClick={selectThis}
     >
       {icon} &nbsp;
-      <span>{name}</span>
+      <span>{displayName}</span>
     </ListGroup.Item>
   );
 }

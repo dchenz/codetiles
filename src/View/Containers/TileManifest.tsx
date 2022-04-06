@@ -1,12 +1,17 @@
 import React from "react";
-import { ArrowRepeat, Diagram2 } from "react-bootstrap-icons";
+import { ArrowRepeat, Diagram2, Box } from "react-bootstrap-icons";
+import { Conditional } from "../../Model/Conditional";
+import { InitVariable } from "../../Model/InitVariable";
+import { Loop } from "../../Model/Loop";
+import { ProgramObject } from "../../Model/ProgramObject";
 
 const iconSize = 24;
 
 export type TileManifestType = {
   icon: JSX.Element,
-  name: string,
+  displayName: string,
   itemType: string,
+  model: (new () => ProgramObject),
   attributes?: {
     fill?: string
   }
@@ -14,11 +19,12 @@ export type TileManifestType = {
 
 export const BasicTiles: TileManifestType[] = [
   {
-    icon: <ArrowRepeat size={iconSize} />,
-    name: "Loop",
-    itemType: "loop",
+    icon: <Box size={iconSize} />,
+    displayName: "Create variable",
+    itemType: "variable_init",
+    model: InitVariable,
     attributes: {
-      fill: "lightgreen"
+      fill: "lightyellow"
     }
   }
 ];
@@ -26,25 +32,35 @@ export const BasicTiles: TileManifestType[] = [
 export const ControlTiles: TileManifestType[] = [
   {
     icon: <Diagram2 size={iconSize} />,
-    name: "Conditional",
+    displayName: "Conditional",
     itemType: "conditional",
+    model: Conditional,
     attributes: {
       fill: "lightblue"
+    }
+  },
+  {
+    icon: <ArrowRepeat size={iconSize} />,
+    displayName: "Loop",
+    itemType: "loop",
+    model: Loop,
+    attributes: {
+      fill: "honeydew"
     }
   }
 ];
 
-export function nameToTile(name: string): TileManifestType {
+export function getTileTemplate(type: string): TileManifestType {
   for (const t of ControlTiles) {
-    if (t.itemType == name) {
+    if (t.itemType == type) {
       return t;
     }
   }
   for (const t of BasicTiles) {
-    if (t.itemType == name) {
+    if (t.itemType == type) {
       return t;
     }
   }
-  console.error("Unknown tile name: " + name);
+  console.error("Unknown tile displayName: " + name);
   throw 1;
 }
