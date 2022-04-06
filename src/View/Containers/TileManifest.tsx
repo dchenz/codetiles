@@ -14,7 +14,9 @@ export type TileManifestType = {
   itemType: string,
   model: (new () => ProgramObject),
   attributes?: {
-    fill?: string
+    fill?: string,
+    stroke?: string,
+    strokeWidth?: number
   }
 }
 
@@ -25,7 +27,9 @@ export const BasicTiles: TileManifestType[] = [
     itemType: "variable_init",
     model: InitVariable,
     attributes: {
-      fill: "#ffffe6"
+      fill: "#ffffa6",
+      stroke: "#000000",
+      strokeWidth: 1
     }
   }
 ];
@@ -37,7 +41,9 @@ export const ControlTiles: TileManifestType[] = [
     itemType: "conditional",
     model: Conditional,
     attributes: {
-      fill: "#d1f4ff"
+      fill: "#d1f4ff",
+      stroke: "#000000",
+      strokeWidth: 1
     }
   },
   {
@@ -46,7 +52,9 @@ export const ControlTiles: TileManifestType[] = [
     itemType: "loop",
     model: Loop,
     attributes: {
-      fill: "#dbffe1"
+      fill: "#abffa1",
+      stroke: "#000000",
+      strokeWidth: 1
     }
   }
 ];
@@ -57,7 +65,9 @@ const EntryPointTile: TileManifestType = {
   itemType: "entry",
   model: EntryPoint,
   attributes: {
-    fill: "#ffffff"
+    fill: "#ffffff",
+    stroke: "#000000",
+    strokeWidth: 1
   }
 };
 
