@@ -1,6 +1,7 @@
 import React from "react";
-import { ArrowRepeat, Diagram2, Box } from "react-bootstrap-icons";
+import { ArrowRepeat, Diagram2, Box, PlayBtn } from "react-bootstrap-icons";
 import { Conditional } from "../../Model/Conditional";
+import { EntryPoint } from "../../Model/EntryPoint";
 import { InitVariable } from "../../Model/InitVariable";
 import { Loop } from "../../Model/Loop";
 import { ProgramObject } from "../../Model/ProgramObject";
@@ -50,7 +51,20 @@ export const ControlTiles: TileManifestType[] = [
   }
 ];
 
+const EntryPointTile: TileManifestType = {
+  icon: <PlayBtn size={iconSize} />,
+  displayName: "Start",
+  itemType: "entry",
+  model: EntryPoint,
+  attributes: {
+    fill: "#ffffff"
+  }
+};
+
 export function getTileTemplate(type: string): TileManifestType {
+  if (type == "entry") {
+    return EntryPointTile;
+  }
   for (const t of ControlTiles) {
     if (t.itemType == type) {
       return t;

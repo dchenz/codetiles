@@ -35,6 +35,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
       mY = e.clientY ?? 0;
       updateCanvasPositionState(setPosCtx, cellSize);
     });
+    onPlacement("entry", width / 2, height / 2);
   }, []);
 
   const width = cellSize * columnCount;
@@ -42,36 +43,33 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
 
   const tileSize = cellSize * 5;
 
-  const onPlacement = () => {
-    const tileType = interactionCtx.menu.selectedTile;
-    if (tileType) {
-      const tMafst = getTileTemplate(tileType);
-      const tModel = new tMafst.model();
-      const tile = {
-        model: tModel,
-        view:
-          <Tile
-            key={tModel.id}
-            width={tileSize}
-            height={tileSize}
-            x={posCtx.x - tileSize / 2}
-            y={posCtx.y - tileSize / 2}
-            model={tModel}
-            manifest={tMafst}
-          />
-      };
-      setTilesCtx([...tilesCtx, tile]);
-      // Clear selection on placement
-      interactionCtx.menu.selectedTile = null;
-      setInteractionCtx(interactionCtx);
-    }
+  const onPlacement = (tileType: string, coordX: number, coordY: number) => {
+    const tMafst = getTileTemplate(tileType);
+    const tModel = new tMafst.model();
+    const tile = {
+      model: tModel,
+      view:
+        <Tile
+          key={tModel.id}
+          width={tileSize}
+          height={tileSize}
+          x={coordX - tileSize / 2}
+          y={coordY - tileSize / 2}
+          model={tModel}
+          manifest={tMafst}
+        />
+    };
+    setTilesCtx([...tilesCtx, tile]);
+    // Clear selection on placement
+    interactionCtx.menu.selectedTile = null;
+    setInteractionCtx(interactionCtx);
   };
 
   return (
     <svg
       ref={ref}
       style={{ width, height, backgroundColor: "#f5f5f5" }}
-      onClick={onPlacement}
+      onClick={() => onPlacement(interactionCtx.menu.selectedTile ?? "", posCtx.x, posCtx.y)}
     >
       <defs>
         <pattern id="grid" width={cellSize} height={cellSize} patternUnits="userSpaceOnUse">
