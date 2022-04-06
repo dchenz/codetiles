@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { ListGroup, Tab, Tabs } from "react-bootstrap";
-import { SelectionContext } from "../../Context/SelectionContext";
+import { InteractionContext } from "../../Context/InteractionContext";
 import { BasicTiles, ControlTiles, TileManifestType } from "../TileManifest";
 import "./styles.css";
 
@@ -11,11 +11,14 @@ type TileListPropTypes = {
 
 export default function TileListWrapper(): JSX.Element {
   // Clear selection on tab change
-  const { setSelectionCtx } = useContext(SelectionContext);
+  const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   return (
     <Tabs
       defaultActiveKey="Basic"
-      onSelect={() => setSelectionCtx({ selected: null })}
+      onSelect={() => {
+        interactionCtx.menu.selectedTile = null;
+        setInteractionCtx(interactionCtx);
+      }}
     >
       <Tab title="Basic" eventKey="Basic">
         <TileList title="Basic" items={BasicTiles} />
@@ -43,13 +46,15 @@ function TileList({ items }: TileListPropTypes): JSX.Element {
 
 function TileListItem({ icon, displayName, itemType }: TileManifestType): JSX.Element {
   // Select tile on click
-  const { selectionCtx, setSelectionCtx } = useContext(SelectionContext);
-  const isItemSelected = itemType === selectionCtx.selected;
+  const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
+  const isItemSelected = itemType === interactionCtx.menu.selectedTile;
   const selectThis = () => {
     if (isItemSelected) {
-      setSelectionCtx({ selected: null });
+      interactionCtx.menu.selectedTile = null;
+      setInteractionCtx(interactionCtx);
     } else {
-      setSelectionCtx({ selected: itemType });
+      interactionCtx.menu.selectedTile = itemType;
+      setInteractionCtx(interactionCtx);
     }
   };
   return (

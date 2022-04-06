@@ -1,6 +1,10 @@
 import { createContext } from "react";
 import { ProgramObject } from "../../Model/ProgramObject";
 
+/*
+  This context tracks the active tiles placed onto the canvas.
+*/
+
 const contextState = {
   tilesCtx: [],
   setTilesCtx: (_: TilesType[]) => { _ == _; }

@@ -1,5 +1,11 @@
 import { createContext } from "react";
 
+/*
+  This context tracks the position of user's mouse over the SVG grid.
+  x, y -> Coordinates on SVG
+  tileX, tileY -> Column and row number (x, y divided by width of grid cell)
+*/
+
 const contextState = {
   posCtx: {
     tileX: 0,

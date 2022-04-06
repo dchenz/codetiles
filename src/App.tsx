@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import MouseTracker from "./View/Components/MouseTracker";
 import { Canvas } from "./View/Containers/Canvas";
 import LeftDrawerMenu from "./View/Containers/LeftDrawerMenu";
+import { TilesContext, TilesType } from "./View/Context/ActiveTilesContext";
 import { GridPositionContext, GridPositionType } from "./View/Context/GridPositionContext";
-import { SelectionContext, SelectionType } from "./View/Context/SelectionContext";
-import { TilesContext, TilesType } from "./View/Context/TilesContext";
+import { InteractionContext, InteractionType } from "./View/Context/InteractionContext";
 
 export default function App(): JSX.Element {
   const [posCtx, setPosCtx] = useState<GridPositionType>({
@@ -14,11 +14,17 @@ export default function App(): JSX.Element {
     y: 0
   });
   const [tilesCtx, setTilesCtx] = useState<TilesType[]>([]);
-  const [selectionCtx, setSelectionCtx] = useState<SelectionType>({
-    selected: null
+  const [interactionCtx, setInteractionCtx] = useState<InteractionType>({
+    menu: {
+      selectedTile: null
+    },
+    canvas: {
+      selectedTile: null,
+      isDraggingTile: false
+    }
   });
   return (
-    <SelectionContext.Provider value={{ selectionCtx, setSelectionCtx }}>
+    <InteractionContext.Provider value={{ interactionCtx, setInteractionCtx }}>
       <TilesContext.Provider value={{ tilesCtx, setTilesCtx }}>
         <GridPositionContext.Provider value={{ posCtx, setPosCtx }}>
           <MouseTracker {...posCtx} />
@@ -26,6 +32,6 @@ export default function App(): JSX.Element {
           <Canvas cellSize={25} rowCount={100} columnCount={200} />
         </GridPositionContext.Provider>
       </TilesContext.Provider>
-    </SelectionContext.Provider>
+    </InteractionContext.Provider>
   );
 }

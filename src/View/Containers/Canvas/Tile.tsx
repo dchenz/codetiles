@@ -1,4 +1,5 @@
 import React from "react";
+import Draggable from "react-draggable";
 import { ProgramObject } from "../../../Model/ProgramObject";
 import { TileManifestType } from "../TileManifest";
 
@@ -19,23 +20,27 @@ export default function Tile({ manifest, ...props }: TilePropTypes) {
     transform: `translate(${props.width * 0.5 - iconSize / 2}, ${props.height * 0.25})`
   });
   return (
-    <g transform={`translate(${props.x}, ${props.y})`}>
-      <rect
-        width={props.width}
-        height={props.height}
-        rx={0}
-        ry={0}
-        {...manifest?.attributes}
-      />
-      <text
-        transform={`translate(${props.width * 0.5}, ${props.height * 0.75})`}
-        textAnchor="middle"
-        fontSize={16}
-        color="#000000"
-      >
-        {manifest.displayName}
-      </text>
-      {tileIcon}
-    </g>
+    <Draggable
+      position={{ x: props.x, y: props.y }}
+    >
+      <g>
+        <rect
+          width={props.width}
+          height={props.height}
+          rx={0}
+          ry={0}
+          {...manifest?.attributes}
+        />
+        <text
+          transform={`translate(${props.width * 0.5}, ${props.height * 0.75})`}
+          textAnchor="middle"
+          fontSize={16}
+          color="#000000"
+        >
+          {manifest.displayName}
+        </text>
+        {tileIcon}
+      </g>
+    </Draggable>
   );
 }

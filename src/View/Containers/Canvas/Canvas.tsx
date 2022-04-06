@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { GridPositionContext } from "../../Context/GridPositionContext";
-import { SelectionContext } from "../../Context/SelectionContext";
-import { TilesContext } from "../../Context/TilesContext";
+import { TilesContext } from "../../Context/ActiveTilesContext";
 import { getTileTemplate } from "../TileManifest";
 import Tile from "./Tile";
 import { GridPropTypes } from "./types";
+import { InteractionContext } from "../../Context/InteractionContext";
 
 let observer: MutationObserver | null = null;
 let x = 0;
@@ -14,7 +14,7 @@ let sc = 1;
 export default function Canvas({ rowCount, columnCount, cellSize }: GridPropTypes): JSX.Element {
   const ref = useRef<SVGSVGElement | null>(null);
   const { posCtx, setPosCtx } = useContext(GridPositionContext);
-  const { selectionCtx, setSelectionCtx } = useContext(SelectionContext);
+  const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
   const tileSize = cellSize * 5;
 
   const onPlacement = () => {
-    const tileType = selectionCtx.selected;
+    const tileType = interactionCtx.menu.selectedTile;
     if (tileType) {
       const tMafst = getTileTemplate(tileType);
       const tModel = new tMafst.model();
@@ -65,7 +65,8 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
       };
       setTilesCtx([...tilesCtx, tile]);
       // Clear selection on placement
-      setSelectionCtx({ selected: null });
+      interactionCtx.menu.selectedTile = null;
+      setInteractionCtx(interactionCtx);
     }
   };
 
@@ -89,7 +90,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
         tilesCtx.map(({ view }) => view)
       }
       {
-        selectionCtx.selected != null ?
+        interactionCtx.menu.selectedTile != null ?
           <rect
             x={posCtx.x - tileSize / 2}
             y={posCtx.y - tileSize / 2}
