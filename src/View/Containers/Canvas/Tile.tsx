@@ -75,7 +75,7 @@ export default function Tile({ manifest, ...props }: TilePropTypes): JSX.Element
         onStop={handleTileDragStop}
         scale={posCtx.zoom}
       >
-        <g>
+        <g style={{ cursor: "pointer"}}>
           <rect
             width={props.width}
             height={props.height}

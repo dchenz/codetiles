@@ -70,6 +70,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees }: Connec
         scale={posCtx.zoom}
       >
         <rect
+          style={{ cursor: "pointer"}}
           x={nodeSize / -2}
           y={nodeSize / -2}
           width={nodeSize}
