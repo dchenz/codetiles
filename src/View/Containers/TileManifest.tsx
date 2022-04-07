@@ -1,7 +1,8 @@
 import React from "react";
-import { ArrowRepeat, Diagram2, Box, PlayBtn } from "react-bootstrap-icons";
+import { ArrowRepeat, Box, Diagram2, PlayBtn, StopBtn } from "react-bootstrap-icons";
 import { Conditional } from "../../Model/Conditional";
 import { EntryPoint } from "../../Model/EntryPoint";
+import { ExitPoint } from "../../Model/ExitPoint";
 import { InitVariable } from "../../Model/InitVariable";
 import { Loop } from "../../Model/Loop";
 import { ProgramObject } from "../../Model/ProgramObject";
@@ -53,6 +54,17 @@ export const ControlTiles: TileManifestType[] = [
     model: Loop,
     attributes: {
       fill: "#abffa1",
+      stroke: "#000000",
+      strokeWidth: 1
+    }
+  },
+  {
+    icon: <StopBtn size={iconSize} />,
+    displayName: "Exit",
+    itemType: "exit",
+    model: ExitPoint,
+    attributes: {
+      fill: "#ff9e8c",
       stroke: "#000000",
       strokeWidth: 1
     }
