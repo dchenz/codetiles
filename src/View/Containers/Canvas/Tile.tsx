@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import Draggable from "react-draggable";
 import { ProgramObject } from "../../../Model/ProgramObject";
+import { TilesContext, TilesType } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
 import { TileManifestType } from "../TileManifest";
@@ -19,6 +20,7 @@ const iconSize = 42;
 export default function Tile({ manifest, ...props }: TilePropTypes) {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
+  const { tilesCtx, setTilesCtx } = useContext(TilesContext);
   const [coord, setCoord] = useState({
     x: props.x,
     y: props.y
@@ -33,6 +35,7 @@ export default function Tile({ manifest, ...props }: TilePropTypes) {
       onStart={() => {
         interactionCtx.canvas.isDraggingTile = true;
         setInteractionCtx(interactionCtx);
+        setTilesCtx(putTileOnTop(tilesCtx, props.model));
       }}
       onDrag={(e, data) => {
         console.log("on drag:", coord);
@@ -68,4 +71,18 @@ export default function Tile({ manifest, ...props }: TilePropTypes) {
       </g>
     </Draggable>
   );
+}
+
+function putTileOnTop(tilesCtx: TilesType[], model: ProgramObject): TilesType[] {
+  let idx = 0;
+  for (let i = 0; i < tilesCtx.length; i++) {
+    if (tilesCtx[i].model.id == model.id) {
+      idx = i;
+      break;
+    }
+  }
+  const tiles = [...tilesCtx];
+  const t = tiles.splice(idx, 1)[0];
+  tiles.push(t);
+  return tiles;
 }
