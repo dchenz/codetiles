@@ -16,7 +16,10 @@ const nodeSize = 25;
 export default function ConnectorLine({ startPoint, model, initDegrees }: ConnectorPropTypes): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
-  const [end, setEnd] = useState(calculateConnectorEndPoint(startPoint, initDegrees, 300));
+  const [ degrees, setDegrees ] = useState(initDegrees);
+  const [ size, setSize] = useState(300);
+
+  const end = calculateConnectorEndPoint(startPoint, degrees, size);
 
   const handleConnDragStart = () => {
     interactionCtx.canvas.isDraggingConnector = true;
@@ -24,10 +27,12 @@ export default function ConnectorLine({ startPoint, model, initDegrees }: Connec
   };
 
   const handleConnDrag = (_: unknown, data: DraggableData) => {
-    setEnd({
+    const p = {
       x: data.x,
       y: data.y
-    });
+    };
+    setDegrees(getBearing(startPoint, p));
+    setSize(getDistance(startPoint, p));
   };
 
   const handleConnDragStop = () => {
@@ -58,7 +63,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees }: Connec
         {model.caption}
       </text>
       <Draggable
-        defaultPosition={end}
+        position={end}
         onStart={handleConnDragStart}
         onDrag={handleConnDrag}
         onStop={handleConnDragStop}
@@ -85,4 +90,17 @@ function calculateConnectorEndPoint(startPoint: Point2D, degrees: number, distan
     x: startPoint.x + Math.sin(radians) * distance,
     y: startPoint.y + Math.cos(radians) * distance
   };
+}
+
+function getBearing(p1: Point2D, p2: Point2D): number {
+  let r = Math.atan2(p2.x - p1.x, p2.y - p1.y);
+  if (r < 0) {
+    r += 2 * Math.PI;
+  }
+  const d = r * 180 / Math.PI;
+  return 2 * (d <= 180 ? 90 : 270) - d;
+}
+
+function getDistance(p1: Point2D, p2: Point2D): number {
+  return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
 }
