@@ -64,7 +64,7 @@ export default function Tile({ manifest, ...props }: TilePropTypes): JSX.Element
             key={k}
             model={conn}
             startPoint={centerPointAbs}
-            degrees={k * 360 / props.model.outboundConnectors.length}
+            initDegrees={k * 360 / props.model.outboundConnectors.length + 90}
           />
         )
       }
@@ -85,7 +85,7 @@ export default function Tile({ manifest, ...props }: TilePropTypes): JSX.Element
             transform={`translate(${centerPointRel.x}, ${props.height * 0.75})`}
             textAnchor="middle"
             fontSize={16}
-            color="#000000"
+            fill="#000000"
           >
             {manifest.displayName}
           </text>

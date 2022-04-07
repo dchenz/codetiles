@@ -8,16 +8,15 @@ import { Point2D } from "./types";
 type ConnectorPropTypes = {
   model: Connector,
   startPoint: Point2D,
-  degrees: number
+  initDegrees: number
 }
 
-const nodeSize = 30;
-const textMargin = 20;
+const nodeSize = 25;
 
-export default function ConnectorLine({ startPoint, model, degrees }: ConnectorPropTypes): JSX.Element {
+export default function ConnectorLine({ startPoint, model, initDegrees }: ConnectorPropTypes): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
-  const [end, setEnd] = useState(calculateConnectorEndPoint(startPoint, degrees, 300));
+  const [end, setEnd] = useState(calculateConnectorEndPoint(startPoint, initDegrees, 300));
 
   const handleConnDragStart = () => {
     interactionCtx.canvas.isDraggingConnector = true;
@@ -36,14 +35,10 @@ export default function ConnectorLine({ startPoint, model, degrees }: ConnectorP
     setInteractionCtx(interactionCtx);
   };
 
-  // Needs to be fixed
-  const textDegrees = degrees % 180 - 90;
-  const d = (90 - Math.abs(90 - degrees % 180));
-  const textPos = {
-    x: (end.x + startPoint.x) / 2 + textMargin * Math.cos(d * Math.PI / 180),
-    y: (end.y + startPoint.y) / 2 - textMargin * Math.sin(d * Math.PI / 180)
+  const midPoint = {
+    x: (end.x + startPoint.x) / 2,
+    y: (end.y + startPoint.y) / 2
   };
-
 
   return (
     <g>
@@ -55,10 +50,10 @@ export default function ConnectorLine({ startPoint, model, degrees }: ConnectorP
         stroke="#000000"
       />
       <text
-        transform={`translate(${textPos.x}, ${textPos.y}) rotate(${textDegrees})`}
+        transform={`translate(${midPoint.x}, ${midPoint.y})`}
         textAnchor="middle"
-        fontSize={12}
-        color="#000000"
+        fontSize={24}
+        fill="#000000"
       >
         {model.caption}
       </text>
