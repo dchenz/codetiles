@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableData } from "react-draggable";
 import { ProgramObject } from "../../../Model/ProgramObject";
 import { TilesContext, TilesType } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
 import { TileManifestType } from "../TileManifest";
+import ConnectorLine from "./ConnectorLine";
+import { Point2D } from "./types";
 
 type TilePropTypes = {
   width: number,
@@ -17,61 +19,89 @@ type TilePropTypes = {
 
 const iconSize = 42;
 
-export default function Tile({ manifest, ...props }: TilePropTypes) {
+export default function Tile({ manifest, ...props }: TilePropTypes): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
-  const [coord, setCoord] = useState({
+  const [coord, setCoord] = useState<Point2D>({
     x: props.x,
     y: props.y
   });
-  const tileIcon = React.cloneElement(manifest.icon, {
-    size: iconSize,
-    transform: `translate(${props.width * 0.5 - iconSize / 2}, ${props.height * 0.25})`
-  });
+
+  const handleTileDragStart = () => {
+    interactionCtx.canvas.isDraggingTile = true;
+    setInteractionCtx(interactionCtx);
+    setTilesCtx(putTileOnTop(tilesCtx, props.model));
+  };
+
+  const handleTileDrag = (_: unknown, data: DraggableData) => {
+    setCoord({
+      x: data.x,
+      y: data.y
+    });
+  };
+
+  const handleTileDragStop = () => {
+    interactionCtx.canvas.isDraggingTile = false;
+    setInteractionCtx(interactionCtx);
+  };
+
+  const centerPointAbs = {
+    x: coord.x + props.width / 2,
+    y: coord.y + props.height / 2
+  };
+
+  const centerPointRel = {
+    x: props.width / 2,
+    y: props.height / 2
+  };
+
   return (
-    <Draggable
-      position={{ x: coord.x, y: coord.y }}
-      onStart={() => {
-        interactionCtx.canvas.isDraggingTile = true;
-        setInteractionCtx(interactionCtx);
-        setTilesCtx(putTileOnTop(tilesCtx, props.model));
-      }}
-      onDrag={(e, data) => {
-        console.log("on drag:", coord);
-        setCoord({
-          x: data.x,
-          y: data.y
-        });
-      }}
-      onStop={() => {
-        interactionCtx.canvas.isDraggingTile = false;
-        console.log("drag stop:", coord);
-        setInteractionCtx(interactionCtx);
-      }}
-      scale={posCtx.zoom}
-    >
-      <g>
-        <rect
-          width={props.width}
-          height={props.height}
-          rx={0}
-          ry={0}
-          {...manifest?.attributes}
-        />
-        <text
-          transform={`translate(${props.width * 0.5}, ${props.height * 0.75})`}
-          textAnchor="middle"
-          fontSize={16}
-          color="#000000"
-        >
-          {manifest.displayName}
-        </text>
-        {tileIcon}
-      </g>
-    </Draggable>
+    <React.Fragment>
+      {
+        props.model.outboundConnectors.map((conn, k) =>
+          <ConnectorLine
+            key={k}
+            model={conn}
+            startPoint={centerPointAbs}
+            degrees={k * 360 / props.model.outboundConnectors.length}
+          />
+        )
+      }
+      <Draggable
+        defaultPosition={coord}
+        onStart={handleTileDragStart}
+        onDrag={handleTileDrag}
+        onStop={handleTileDragStop}
+        scale={posCtx.zoom}
+      >
+        <g>
+          <rect
+            width={props.width}
+            height={props.height}
+            {...manifest?.attributes}
+          />
+          <text
+            transform={`translate(${centerPointRel.x}, ${props.height * 0.75})`}
+            textAnchor="middle"
+            fontSize={16}
+            color="#000000"
+          >
+            {manifest.displayName}
+          </text>
+          {
+            React.cloneElement(manifest.icon, {
+              size: iconSize,
+              transform: `translate(${centerPointRel.x - iconSize / 2}, ${props.height * 0.25})`
+            })
+          }
+        </g>
+      </Draggable>
+    </React.Fragment>
   );
 }
+
+
 
 function putTileOnTop(tilesCtx: TilesType[], model: ProgramObject): TilesType[] {
   let idx = 0;

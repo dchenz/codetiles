@@ -16,9 +16,8 @@ let mY = 0; // Mouse Y position in viewport
 export default function Canvas({ rowCount, columnCount, cellSize }: GridPropTypes): JSX.Element {
   const ref = useRef<SVGSVGElement | null>(null);
   const { posCtx, setPosCtx } = useContext(GridPositionContext);
-  const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
+  const { interactionCtx: { menu, canvas }, setInteractionCtx } = useContext(InteractionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
-
   useEffect(() => {
     if (observer == null && ref?.current?.parentNode) {
       observer = new MutationObserver((mutations) => updateContextOnMutation(mutations));
@@ -61,15 +60,15 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
     };
     setTilesCtx([...tilesCtx, tile]);
     // Clear selection on placement
-    interactionCtx.menu.selectedTile = null;
-    setInteractionCtx(interactionCtx);
+    menu.selectedTile = null;
+    setInteractionCtx({ menu, canvas });
   };
 
   return (
     <svg
       ref={ref}
       style={{ width, height, backgroundColor: "#f5f5f5" }}
-      onClick={() => onPlacement(interactionCtx.menu.selectedTile ?? "", posCtx.x, posCtx.y)}
+      onClick={() => menu.selectedTile ? onPlacement(menu.selectedTile, posCtx.x, posCtx.y) : null}
     >
       <defs>
         <pattern id="grid" width={cellSize} height={cellSize} patternUnits="userSpaceOnUse">
@@ -85,7 +84,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: GridPropType
         tilesCtx.map(({ view }) => view)
       }
       {
-        interactionCtx.menu.selectedTile != null ?
+        menu.selectedTile != null ?
           <rect
             x={posCtx.x - tileSize / 2}
             y={posCtx.y - tileSize / 2}

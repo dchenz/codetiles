@@ -2,10 +2,10 @@ import { Serializable } from "./Serializable";
 
 export class Connector implements Serializable {
 
-  targetId: string;
+  targetId: string | null;
   caption: string;
 
-  constructor(targetId: string, caption: string) {
+  constructor(targetId: string | null, caption: string) {
     this.targetId = targetId;
     this.caption = caption;
   }

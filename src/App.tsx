@@ -22,7 +22,9 @@ export default function App(): JSX.Element {
     canvas: {
       ref: null,
       selectedTile: null,
-      isDraggingTile: false
+      selectedConnector: null,
+      isDraggingTile: false,
+      isDraggingConnector: false
     }
   });
   return (

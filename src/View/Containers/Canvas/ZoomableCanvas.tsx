@@ -20,7 +20,7 @@ export default function ZoomableCanvas({ cellSize, rowCount, columnCount }: Grid
       initialPositionY={canvasHeight * initY}
       minScale={0.25}
       maxScale={4}
-      disabled={interactionCtx.canvas.isDraggingTile}
+      disabled={interactionCtx.canvas.isDraggingTile || interactionCtx.canvas.isDraggingConnector}
       onZoom={() => updateCanvasPositionState(setPosCtx, cellSize)}
       onZoomStop={() => updateCanvasPositionState(setPosCtx, cellSize)}
       onInit={(ref) => {
