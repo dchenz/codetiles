@@ -25,6 +25,7 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
           <ConnectorLine
             key={k}
             model={conn}
+            tileInstance={instance}
             startPoint={{
               x: instance.x + instance.width / 2,
               y: instance.y + instance.height / 2
