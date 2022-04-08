@@ -12,8 +12,8 @@ const nodeSize = 25;
 export default function ConnectorLine({ startPoint, model, initDegrees, minLength }: ConnectorProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
-  const [ degrees, setDegrees ] = useState(initDegrees);
-  const [ size, setSize] = useState(minLength);
+  const [degrees, setDegrees] = useState(initDegrees);
+  const [size, setSize] = useState(minLength);
 
   const end = calculateConnectorEndPoint(startPoint, degrees, size);
 
@@ -42,10 +42,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
     setInteractionCtx(interactionCtx);
   };
 
-  const midPoint = {
-    x: (end.x + startPoint.x) / 2,
-    y: (end.y + startPoint.y) / 2
-  };
+  const textCoord = getTextCoord(startPoint, end, size);
 
   return (
     <g>
@@ -57,7 +54,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
         stroke="#000000"
       />
       <text
-        transform={`translate(${midPoint.x}, ${midPoint.y})`}
+        transform={`translate(${textCoord.x}, ${textCoord.y})`}
         textAnchor="middle"
         fontSize={24}
         fill="#000000"
@@ -72,7 +69,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
         scale={posCtx.zoom}
       >
         <rect
-          style={{ cursor: "pointer"}}
+          style={{ cursor: "pointer" }}
           x={nodeSize / -2}
           y={nodeSize / -2}
           width={nodeSize}
@@ -86,7 +83,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
 
 function calculateConnectorEndPoint(startPoint: Point2D, degrees: number, distance: number): Point2D {
   // 0 degrees is considered north (top of screen) despite Y increasing downwards
-  const adjustedDegrees =  2 * (degrees <= 180 ? 90 : 270) - degrees;
+  const adjustedDegrees = 2 * (degrees <= 180 ? 90 : 270) - degrees;
   const radians = adjustedDegrees * Math.PI / 180;
   // Calculate coordinates of line's other point
   return {
@@ -95,3 +92,24 @@ function calculateConnectorEndPoint(startPoint: Point2D, degrees: number, distan
   };
 }
 
+function getTextCoord(startPoint: Point2D, endPoint: Point2D, size: number): Point2D {
+  // Adjust values with font size and tile width
+  if (size > 200) {
+    return {
+      x: (endPoint.x + startPoint.x) / 2,
+      y: (endPoint.y + startPoint.y) / 2
+    };
+  }
+  const offsetSize = 25;
+  const xOffset = offsetSize * (endPoint.x > startPoint.x ? 1 : -1);
+  let yOffset;
+  if (endPoint.y > startPoint.y) {
+    yOffset = offsetSize + 15;
+  } else {
+    yOffset = -offsetSize;
+  }
+  return {
+    x: endPoint.x + xOffset,
+    y: endPoint.y + yOffset
+  };
+}
