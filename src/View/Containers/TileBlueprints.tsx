@@ -16,7 +16,7 @@ export const BasicTiles: TileBlueprintType[] = [
     icon: <Box size={iconSize} />,
     displayName: "Create variable",
     itemType: "variable_init",
-    model: InitVariable,
+    modelClass: InitVariable,
     attributes: {
       fill: "#ffffa6",
       stroke: "#000000",
@@ -30,7 +30,7 @@ export const ControlTiles: TileBlueprintType[] = [
     icon: <Diagram2 size={iconSize} />,
     displayName: "Conditional",
     itemType: "conditional",
-    model: Conditional,
+    modelClass: Conditional,
     attributes: {
       fill: "#d1f4ff",
       stroke: "#000000",
@@ -41,7 +41,7 @@ export const ControlTiles: TileBlueprintType[] = [
     icon: <ArrowRepeat size={iconSize} />,
     displayName: "Loop",
     itemType: "loop",
-    model: Loop,
+    modelClass: Loop,
     attributes: {
       fill: "#abffa1",
       stroke: "#000000",
@@ -52,7 +52,7 @@ export const ControlTiles: TileBlueprintType[] = [
     icon: <StopBtn size={iconSize} />,
     displayName: "Exit",
     itemType: "exit",
-    model: ExitPoint,
+    modelClass: ExitPoint,
     attributes: {
       fill: "#ff9e8c",
       stroke: "#000000",
@@ -65,7 +65,7 @@ const EntryPointTile: TileBlueprintType = {
   icon: <PlayBtn size={iconSize} />,
   displayName: "Start",
   itemType: "entry",
-  model: EntryPoint,
+  modelClass: EntryPoint,
   attributes: {
     fill: "#ffffff",
     stroke: "#000000",

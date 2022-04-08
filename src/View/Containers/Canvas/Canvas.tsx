@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import { GridPositionContext, GridPositionType } from "../../Context/GridPositionContext";
 import { TilesContext } from "../../Context/ActiveTilesContext";
-import { getTileTemplate } from "../TileManifest";
+import { getTileTemplate } from "../TileBlueprints";
 import Tile from "./Tile";
 import { CanvasProps } from "../../../types";
 import { InteractionContext } from "../../Context/InteractionContext";
@@ -44,8 +44,8 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
   const tileSize = cellSize * 5;
 
   const onPlacement = (tileType: string, coordX: number, coordY: number) => {
-    const tMafst = getTileTemplate(tileType);
-    const tModel = new tMafst.model();
+    const tmpl = getTileTemplate(tileType);
+    const tModel = new tmpl.modelClass();
     const tile = {
       model: tModel,
       view:
@@ -56,7 +56,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
           x={coordX - tileSize / 2}
           y={coordY - tileSize / 2}
           model={tModel}
-          manifest={tMafst}
+          blueprint={tmpl}
         />
     };
     setTilesCtx([...tilesCtx, tile]);

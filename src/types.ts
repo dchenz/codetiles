@@ -27,7 +27,7 @@ export type TileBlueprintType = {
   icon: JSX.Element,                  // Tile icon
   displayName: string,                // Text in menu list and on canvas
   itemType: string,                   // Must be the same as type in model's class
-  model: (new () => ProgramObject),   // Constructor to instantiate new model
+  modelClass: (new () => ProgramObject),   // Constructor to instantiate new model
   attributes?: {
     fill?: string,
     stroke?: string,
@@ -42,7 +42,7 @@ export type TileInstanceType = {
   x: number,
   y: number,
   model: ProgramObject,
-  manifest: TileBlueprintType
+  blueprint: TileBlueprintType
 }
 
 export type ConnectorProps = {

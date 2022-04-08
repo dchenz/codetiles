@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Tab, Tabs } from "react-bootstrap";
 import { InteractionContext } from "../../Context/InteractionContext";
-import { BasicTiles, ControlTiles } from "../TileManifest";
+import { BasicTiles, ControlTiles } from "../TileBlueprints";
 import { TileMenuList } from "./TileMenuList";
 
 export function TileMenuTabs(): JSX.Element {

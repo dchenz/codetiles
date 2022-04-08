@@ -11,7 +11,7 @@ import ConnectorLine from "./ConnectorLine";
 
 const iconSize = 42;
 
-export default function Tile({ manifest, ...props }: TileInstanceType): JSX.Element {
+export default function Tile({ blueprint, ...props }: TileInstanceType): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
@@ -71,7 +71,7 @@ export default function Tile({ manifest, ...props }: TileInstanceType): JSX.Elem
           <rect
             width={props.width}
             height={props.height}
-            {...manifest?.attributes}
+            {...blueprint?.attributes}
           />
           <text
             transform={`translate(${centerPointRel.x}, ${props.height * 0.75})`}
@@ -79,10 +79,10 @@ export default function Tile({ manifest, ...props }: TileInstanceType): JSX.Elem
             fontSize={16}
             fill="#000000"
           >
-            {manifest.displayName}
+            {blueprint.displayName}
           </text>
           {
-            React.cloneElement(manifest.icon, {
+            React.cloneElement(blueprint.icon, {
               size: iconSize,
               transform: `translate(${centerPointRel.x - iconSize / 2}, ${props.height * 0.25})`
             })

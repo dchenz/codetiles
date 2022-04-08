@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MouseTracker from "./View/Components/MouseTracker";
 import { Canvas } from "./View/Containers/Canvas";
-import LeftDrawerMenu from "./View/Containers/Menu";
+import { Menu } from "./View/Containers/Menu";
 import { TilesContext, TilesType } from "./View/Context/ActiveTilesContext";
 import { GridPositionContext, GridPositionType } from "./View/Context/GridPositionContext";
 import { InteractionContext, InteractionType } from "./View/Context/InteractionContext";
@@ -32,7 +32,7 @@ export default function App(): JSX.Element {
       <TilesContext.Provider value={{ tilesCtx, setTilesCtx }}>
         <GridPositionContext.Provider value={{ posCtx, setPosCtx }}>
           <MouseTracker />
-          <LeftDrawerMenu />
+          <Menu />
           <Canvas cellSize={25} rowCount={100} columnCount={200} />
         </GridPositionContext.Provider>
       </TilesContext.Provider>

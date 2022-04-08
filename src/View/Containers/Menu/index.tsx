@@ -4,7 +4,7 @@ import "./styles.css";
 import { TileMenuTabs } from "./TileMenuTabs";
 import { ToggleClose } from "./ToggleClose";
 
-export default function LeftDrawerMenu(): JSX.Element {
+export function Menu(): JSX.Element {
   // Clear selection on drawer collapse toggle
   const [isClosed, setClosed] = useState<boolean>(false);
   const cls = isClosed ? "collapse-left-closed" : "collapse-left-open";

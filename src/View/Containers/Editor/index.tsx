@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import "./styles.css";
 
-export default function BottomDrawerMenu(): JSX.Element {
+export function Editor(): JSX.Element {
   const [isCollapsed] = useState<boolean>(true);
   const collapseStyleCls = isCollapsed ? "collapse-bottom-closed" : "collapse-bottom-open";
   return (
