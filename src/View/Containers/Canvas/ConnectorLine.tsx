@@ -60,6 +60,8 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
     if (potentialConnectedTile) {
       // Attempt connection with tile
       props.model.sendConnection(potentialConnectedTile.model);
+      // Stop hovering
+      potentialConnectedTile.isConnectorHovering = false;
     }
   };
 

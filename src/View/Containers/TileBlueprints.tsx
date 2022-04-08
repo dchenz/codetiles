@@ -86,6 +86,10 @@ const EntryPointTile: TileBlueprintType = {
     fill: "#ffffff",
     stroke: "#000000",
     strokeWidth: 1
+  },
+  hoverAttributes: {
+    stroke: "#000000",
+    strokeWidth: 1
   }
 };
 
