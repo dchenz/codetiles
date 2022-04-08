@@ -3,9 +3,10 @@ import { GridPositionContext, GridPositionType } from "../../Context/GridPositio
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { getTileTemplate } from "../TileBlueprints";
 import Tile from "./Tile";
-import { CanvasProps } from "../../../types";
+import { CanvasProps, TileInstanceType } from "../../../types";
 import { InteractionContext } from "../../Context/InteractionContext";
 import "./styles.css";
+import { ProgramObject } from "../../../Model/ProgramObject";
 
 let observer: MutationObserver | null = null;
 let ofsX = 0; // Width of canvas outside of viewport
@@ -77,7 +78,21 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
       </defs>
       <rect width="100%" height="100%" fill="url(#grid)" />
       {
-        tilesCtx.map(ctx => <Tile key={ctx.model.id} instance={ctx} />)
+        tilesCtx.map(ctx =>
+          <Tile
+            key={ctx.model.id}
+            instance={ctx}
+            onTileDragStart={() => {
+              canvas.isDraggingTile = true;
+              setInteractionCtx({ menu, canvas });
+              setTilesCtx(putTileOnTop(tilesCtx, ctx.model));
+            }}
+            onTileDragEnd={() => {
+              canvas.isDraggingTile = false;
+              setInteractionCtx({ menu, canvas });
+            }}
+          />
+        )
       }
       {
         menu.selectedTile != null ?
@@ -94,6 +109,20 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
     </svg>
   );
 
+}
+
+function putTileOnTop(tilesCtx: TileInstanceType[], model: ProgramObject): TileInstanceType[] {
+  let idx = 0;
+  for (let i = 0; i < tilesCtx.length; i++) {
+    if (tilesCtx[i].model.id == model.id) {
+      idx = i;
+      break;
+    }
+  }
+  const tiles = [...tilesCtx];
+  const t = tiles.splice(idx, 1)[0];
+  tiles.push(t);
+  return tiles;
 }
 
 export function updateCanvasPositionState(updateState: (_: GridPositionType) => void, cellSize: number) {

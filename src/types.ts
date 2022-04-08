@@ -46,7 +46,9 @@ export type TileInstanceType = {
 }
 
 export type TileProps = {
-  instance: TileInstanceType
+  instance: TileInstanceType,
+  onTileDragStart: () => void,
+  onTileDragEnd: () => void
 }
 
 export type ConnectorProps = {
