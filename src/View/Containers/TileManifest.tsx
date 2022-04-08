@@ -5,23 +5,13 @@ import { EntryPoint } from "../../Model/EntryPoint";
 import { ExitPoint } from "../../Model/ExitPoint";
 import { InitVariable } from "../../Model/InitVariable";
 import { Loop } from "../../Model/Loop";
-import { ProgramObject } from "../../Model/ProgramObject";
+import { TileBlueprintType } from "../../types";
 
 const iconSize = 24;
 
-export type TileManifestType = {
-  icon: JSX.Element,
-  displayName: string,
-  itemType: string,
-  model: (new () => ProgramObject),
-  attributes?: {
-    fill?: string,
-    stroke?: string,
-    strokeWidth?: number
-  }
-}
 
-export const BasicTiles: TileManifestType[] = [
+
+export const BasicTiles: TileBlueprintType[] = [
   {
     icon: <Box size={iconSize} />,
     displayName: "Create variable",
@@ -35,7 +25,7 @@ export const BasicTiles: TileManifestType[] = [
   }
 ];
 
-export const ControlTiles: TileManifestType[] = [
+export const ControlTiles: TileBlueprintType[] = [
   {
     icon: <Diagram2 size={iconSize} />,
     displayName: "Conditional",
@@ -71,7 +61,7 @@ export const ControlTiles: TileManifestType[] = [
   }
 ];
 
-const EntryPointTile: TileManifestType = {
+const EntryPointTile: TileBlueprintType = {
   icon: <PlayBtn size={iconSize} />,
   displayName: "Start",
   itemType: "entry",
@@ -83,7 +73,7 @@ const EntryPointTile: TileManifestType = {
   }
 };
 
-export function getTileTemplate(type: string): TileManifestType {
+export function getTileTemplate(type: string): TileBlueprintType {
   if (type == "entry") {
     return EntryPointTile;
   }

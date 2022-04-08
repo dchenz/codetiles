@@ -1,25 +1,17 @@
 import React, { useContext, useState } from "react";
 import Draggable, { DraggableData } from "react-draggable";
 import { ProgramObject } from "../../../Model/ProgramObject";
+import { Point2D, TileInstanceType } from "../../../types";
 import { TilesContext, TilesType } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
-import { TileManifestType } from "../TileManifest";
 import ConnectorLine from "./ConnectorLine";
-import { Point2D } from "./types";
 
-type TilePropTypes = {
-  width: number,
-  height: number,
-  x: number,
-  y: number,
-  model: ProgramObject,
-  manifest: TileManifestType
-}
+
 
 const iconSize = 42;
 
-export default function Tile({ manifest, ...props }: TilePropTypes): JSX.Element {
+export default function Tile({ manifest, ...props }: TileInstanceType): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);

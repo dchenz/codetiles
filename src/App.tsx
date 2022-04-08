@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MouseTracker from "./View/Components/MouseTracker";
 import { Canvas } from "./View/Containers/Canvas";
-import LeftDrawerMenu from "./View/Containers/LeftDrawerMenu";
+import LeftDrawerMenu from "./View/Containers/Menu";
 import { TilesContext, TilesType } from "./View/Context/ActiveTilesContext";
 import { GridPositionContext, GridPositionType } from "./View/Context/GridPositionContext";
 import { InteractionContext, InteractionType } from "./View/Context/InteractionContext";

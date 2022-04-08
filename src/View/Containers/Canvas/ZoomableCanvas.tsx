@@ -3,9 +3,9 @@ import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
 import GridBackdrop, { updateCanvasPositionState } from "./Canvas";
-import { GridPropTypes } from "./types";
+import { CanvasProps } from "../../../types";
 
-export default function ZoomableCanvas({ cellSize, rowCount, columnCount }: GridPropTypes): JSX.Element {
+export default function ZoomableCanvas({ cellSize, rowCount, columnCount }: CanvasProps): JSX.Element {
   const { interactionCtx } = useContext(InteractionContext);
   const { setPosCtx } = useContext(GridPositionContext);
   const canvasWidth = cellSize * columnCount;

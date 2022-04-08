@@ -3,7 +3,7 @@ import { GridPositionContext, GridPositionType } from "../../Context/GridPositio
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { getTileTemplate } from "../TileManifest";
 import Tile from "./Tile";
-import { GridPropTypes } from "./types";
+import { CanvasProps } from "../../../types";
 import { InteractionContext } from "../../Context/InteractionContext";
 
 let observer: MutationObserver | null = null;
@@ -13,11 +13,12 @@ let sc = 1; // Zoom scale factor
 let mX = 0; // Mouse X position in viewport
 let mY = 0; // Mouse Y position in viewport
 
-export default function Canvas({ rowCount, columnCount, cellSize }: GridPropTypes): JSX.Element {
+export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps): JSX.Element {
   const ref = useRef<SVGSVGElement | null>(null);
   const { posCtx, setPosCtx } = useContext(GridPositionContext);
   const { interactionCtx: { menu, canvas }, setInteractionCtx } = useContext(InteractionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
+
   useEffect(() => {
     if (observer == null && ref?.current?.parentNode) {
       observer = new MutationObserver((mutations) => updateContextOnMutation(mutations));

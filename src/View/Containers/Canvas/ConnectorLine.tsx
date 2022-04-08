@@ -1,19 +1,13 @@
 import React, { useContext, useState } from "react";
 import Draggable, { DraggableData } from "react-draggable";
-import { Connector } from "../../../Model/Connector";
+import { ConnectorProps, Point2D } from "../../../types";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
-import { Point2D } from "./types";
 
-type ConnectorPropTypes = {
-  model: Connector,
-  startPoint: Point2D,
-  initDegrees: number
-}
 
 const nodeSize = 25;
 
-export default function ConnectorLine({ startPoint, model, initDegrees }: ConnectorPropTypes): JSX.Element {
+export default function ConnectorLine({ startPoint, model, initDegrees }: ConnectorProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
   const [ degrees, setDegrees ] = useState(initDegrees);
