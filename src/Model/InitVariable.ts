@@ -1,4 +1,3 @@
-import { Connector } from "./Connector";
 import { ProgramObject } from "./ProgramObject";
 
 
@@ -11,7 +10,7 @@ export class InitVariable extends ProgramObject {
     super("variable_init");
     this.name = "";
     this.value = "";
-    this.outboundConnectors.push(new Connector(null, ""));
+    this.addConnector("");
   }
 
   toObject(): Record<string, unknown> {

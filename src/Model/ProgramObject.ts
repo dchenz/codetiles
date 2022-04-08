@@ -20,6 +20,19 @@ export abstract class ProgramObject implements Serializable {
     this.returnType = "null";
   }
 
+  addConnector(caption: string) {
+    this.outboundConnectors.push(new Connector(this, caption));
+  }
+
+  // Assumption: A tile can only join one connector to a particular tile
+  receiveConnection(fromTile: ProgramObject): boolean {
+    if (this.inboundConnectors.includes(fromTile.id)) {
+      return false;
+    }
+    this.inboundConnectors.push(fromTile.id);
+    return true;
+  }
+
   toObject(): Record<string, unknown> {
     return {
       "id": this.id,

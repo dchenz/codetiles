@@ -1,4 +1,3 @@
-import { Connector } from "./Connector";
 import { ProgramObject } from "./ProgramObject";
 
 export class Loop extends ProgramObject {
@@ -10,8 +9,8 @@ export class Loop extends ProgramObject {
     super("loop");
     this.condition = "";
     this.nestedScope = [];
-    this.outboundConnectors.push(new Connector(null, "REPEAT"));
-    this.outboundConnectors.push(new Connector(null, "LEAVE"));
+    this.addConnector("REPEAT");
+    this.addConnector("LEAVE");
   }
 
   toObject(): Record<string, unknown> {

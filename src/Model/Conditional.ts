@@ -1,4 +1,3 @@
-import { Connector } from "./Connector";
 import { ProgramObject } from "./ProgramObject";
 import { Serializable } from "./Serializable";
 
@@ -13,8 +12,8 @@ export class Conditional extends ProgramObject {
     this.ifBlock = new ConditionalBlock();
     this.elseIfBlocks = [];
     this.elseBlock = new ConditionalBlock();
-    this.outboundConnectors.push(new Connector(null, "IF"));
-    this.outboundConnectors.push(new Connector(null, "ELSE"));
+    this.addConnector("IF");
+    this.addConnector("ELSE");
   }
 
   toObject() {

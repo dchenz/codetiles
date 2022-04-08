@@ -17,7 +17,18 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
   const [degrees, setDegrees] = useState(props.initDegrees);
   const [size, setSize] = useState(props.minLength);
 
-  const end = calculateConnectorEndPoint(props.startPoint, degrees, size);
+  let end: Point2D;
+  if (props.model.targetId == null) {
+    end = calculateConnectorEndPoint(props.startPoint, degrees, size);
+  } else {
+    const connectedTile = tilesCtx.filter(x => x.model.id == props.model.targetId)[0];
+    end = {
+      x: connectedTile.x + connectedTile.width / 2,
+      y: connectedTile.y + connectedTile.height / 2
+    };
+    // Degrees and size cannot be set here
+    // These need to be set if connector is removed
+  }
 
   const handleConnDragStart = () => {
     interactionCtx.canvas.isDraggingConnector = true;
@@ -44,6 +55,12 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
   const handleConnDragStop = () => {
     interactionCtx.canvas.isDraggingConnector = false;
     setInteractionCtx(interactionCtx);
+    // Check if connector overlaps any tiles on drag stop
+    const potentialConnectedTile = getOverlappingTile(tilesCtx);
+    if (potentialConnectedTile) {
+      // Attempt connection with tile
+      props.model.sendConnection(potentialConnectedTile.model);
+    }
   };
 
   const textCoord = getTextCoord(props.startPoint, end, size);
@@ -100,6 +117,15 @@ function handleOverlappingTiles(connPoint: Point2D, tiles: TileInstanceType[], i
       t.isConnectorHovering = false;
     }
   }
+}
+
+function getOverlappingTile(tiles: TileInstanceType[]): TileInstanceType | null {
+  for (const t of tiles) {
+    if (t.isConnectorHovering) {
+      return t;
+    }
+  }
+  return null;
 }
 
 function calculateConnectorEndPoint(startPoint: Point2D, degrees: number, distance: number): Point2D {
