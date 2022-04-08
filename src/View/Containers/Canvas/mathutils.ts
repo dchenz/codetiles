@@ -10,5 +10,9 @@ export function getBearing(p1: Point2D, p2: Point2D): number {
 }
 
 export function getDistance(p1: Point2D, p2: Point2D): number {
-  return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2));
+  return getHypotenuse(p2.x - p1.x, p2.y - p1.y);
+}
+
+export function getHypotenuse(length1: number, length2: number): number {
+  return Math.sqrt(length1 * length1 + length2 * length2);
 }

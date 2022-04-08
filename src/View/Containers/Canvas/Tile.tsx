@@ -4,6 +4,7 @@ import { TileProps } from "../../../types";
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import ConnectorLine from "./ConnectorLine";
+import { getHypotenuse } from "./mathutils";
 
 const iconSize = 42;
 
@@ -25,12 +26,12 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
           <ConnectorLine
             key={k}
             model={conn}
-            tileInstance={instance}
             startPoint={{
               x: instance.x + instance.width / 2,
               y: instance.y + instance.height / 2
             }}
             initDegrees={k * 360 / instance.model.outboundConnectors.length + 90}
+            minLength={getHypotenuse(instance.width / 2, instance.height / 2)}
           />
         )
       }

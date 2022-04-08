@@ -53,7 +53,7 @@ export type TileProps = {
 
 export type ConnectorProps = {
   model: Connector,
-  tileInstance: TileInstanceType,
   startPoint: Point2D,
-  initDegrees: number
+  initDegrees: number,
+  minLength: number
 }

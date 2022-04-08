@@ -8,11 +8,12 @@ import { getBearing, getDistance } from "./mathutils";
 
 const nodeSize = 25;
 
-export default function ConnectorLine({ startPoint, model, initDegrees, tileInstance }: ConnectorProps): JSX.Element {
+
+export default function ConnectorLine({ startPoint, model, initDegrees, minLength }: ConnectorProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
   const [ degrees, setDegrees ] = useState(initDegrees);
-  const [ size, setSize] = useState(tileInstance.width * 2);
+  const [ size, setSize] = useState(minLength);
 
   const end = calculateConnectorEndPoint(startPoint, degrees, size);
 
@@ -27,9 +28,9 @@ export default function ConnectorLine({ startPoint, model, initDegrees, tileInst
       y: data.y
     };
     // Stop the node from going under the tile
-    if (size < tileInstance.width * 2) {
+    if (size < minLength) {
       setDegrees(getBearing(startPoint, p));
-      setSize(tileInstance.width * 2);
+      setSize(minLength);
     } else {
       setDegrees(getBearing(startPoint, p));
       setSize(getDistance(startPoint, p));
