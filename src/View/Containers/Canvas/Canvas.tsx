@@ -5,6 +5,7 @@ import { getTileTemplate } from "../TileBlueprints";
 import Tile from "./Tile";
 import { CanvasProps } from "../../../types";
 import { InteractionContext } from "../../Context/InteractionContext";
+import "./styles.css";
 
 let observer: MutationObserver | null = null;
 let ofsX = 0; // Width of canvas outside of viewport
@@ -19,6 +20,34 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
   const { interactionCtx: { menu, canvas }, setInteractionCtx } = useContext(InteractionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
 
+  const width = cellSize * columnCount;
+  const height = cellSize * rowCount;
+  const tileSize = cellSize * 5;
+
+  const addTileOnCanvas = (tileType: string, coordX: number, coordY: number) => {
+    const tmpl = getTileTemplate(tileType);
+    const tModel = new tmpl.modelClass();
+    const ctx = {
+      width: tileSize,
+      height: tileSize,
+      x: coordX - tileSize / 2,
+      y: coordY - tileSize / 2,
+      model: tModel,
+      blueprint: tmpl
+    };
+    setTilesCtx([...tilesCtx, ctx]);
+    // Clear selection on placement
+    menu.selectedTile = null;
+    setInteractionCtx({ menu, canvas });
+  };
+
+  const onCanvasClick = () => {
+    if (menu.selectedTile) {
+      addTileOnCanvas(menu.selectedTile, posCtx.x, posCtx.y);
+    }
+  };
+
+  // Register observer to track SVG canvas offsets and scale
   useEffect(() => {
     if (observer == null && ref?.current?.parentNode) {
       observer = new MutationObserver((mutations) => updateContextOnMutation(mutations));
@@ -29,60 +58,26 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
     }
   }, [ref, observer]);
 
+  // Add listener to track mouse position on the canvas (SVG coordinates)
   useEffect(() => {
     document.body.addEventListener("mousemove", (e: MouseEventInit) => {
       mX = e.clientX ?? 0;
       mY = e.clientY ?? 0;
       updateCanvasPositionState(setPosCtx, cellSize);
     });
-    onPlacement("entry", width / 2, height / 2);
+    addTileOnCanvas("entry", width / 2, height / 2);
   }, []);
 
-  const width = cellSize * columnCount;
-  const height = cellSize * rowCount;
-
-  const tileSize = cellSize * 5;
-
-  const onPlacement = (tileType: string, coordX: number, coordY: number) => {
-    const tmpl = getTileTemplate(tileType);
-    const tModel = new tmpl.modelClass();
-    const tile = {
-      model: tModel,
-      view:
-        <Tile
-          key={tModel.id}
-          width={tileSize}
-          height={tileSize}
-          x={coordX - tileSize / 2}
-          y={coordY - tileSize / 2}
-          model={tModel}
-          blueprint={tmpl}
-        />
-    };
-    setTilesCtx([...tilesCtx, tile]);
-    // Clear selection on placement
-    menu.selectedTile = null;
-    setInteractionCtx({ menu, canvas });
-  };
-
   return (
-    <svg
-      ref={ref}
-      style={{ width, height, backgroundColor: "#f5f5f5" }}
-      onClick={() => menu.selectedTile ? onPlacement(menu.selectedTile, posCtx.x, posCtx.y) : null}
-    >
+    <svg ref={ref} style={{ width, height }} className="canvas-area" onClick={onCanvasClick}>
       <defs>
         <pattern id="grid" width={cellSize} height={cellSize} patternUnits="userSpaceOnUse">
           <path d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`} fill="none" stroke="gray" strokeWidth="1" />
         </pattern>
       </defs>
-      <rect
-        width="100%"
-        height="100%"
-        fill="url(#grid)"
-      />
+      <rect width="100%" height="100%" fill="url(#grid)" />
       {
-        tilesCtx.map(({ view }) => view)
+        tilesCtx.map(ctx => <Tile key={ctx.model.id} {...ctx} />)
       }
       {
         menu.selectedTile != null ?

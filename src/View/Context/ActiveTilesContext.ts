@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ProgramObject } from "../../Model/ProgramObject";
+import { TileInstanceType } from "../../types";
 
 /*
   This context tracks the active tiles placed onto the canvas.
@@ -12,10 +12,7 @@ const contextState = {
 
 export const TilesContext = createContext<TilesCtxType>(contextState);
 
-export type TilesType = {
-  model: ProgramObject,
-  view: JSX.Element
-}
+export type TilesType = TileInstanceType;
 
 export type TilesCtxType = {
   tilesCtx: TilesType[],
