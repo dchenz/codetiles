@@ -1,21 +1,23 @@
 import React, { useContext, useState } from "react";
 import Draggable, { DraggableData } from "react-draggable";
-import { ConnectorProps, Point2D } from "../../../types";
+import { ConnectorProps, Point2D, TileInstanceType } from "../../../types";
+import { TilesContext } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
-import { getBearing, getDistance } from "./mathutils";
+import { getBearing, getDistance, isRectOverlap } from "./mathutils";
 
 
 const nodeSize = 25;
 
 
-export default function ConnectorLine({ startPoint, model, initDegrees, minLength }: ConnectorProps): JSX.Element {
+export default function ConnectorLine(props: ConnectorProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
+  const { tilesCtx } = useContext(TilesContext);
   const { posCtx } = useContext(GridPositionContext);
-  const [degrees, setDegrees] = useState(initDegrees);
-  const [size, setSize] = useState(minLength);
+  const [degrees, setDegrees] = useState(props.initDegrees);
+  const [size, setSize] = useState(props.minLength);
 
-  const end = calculateConnectorEndPoint(startPoint, degrees, size);
+  const end = calculateConnectorEndPoint(props.startPoint, degrees, size);
 
   const handleConnDragStart = () => {
     interactionCtx.canvas.isDraggingConnector = true;
@@ -28,13 +30,15 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
       y: data.y
     };
     // Stop the node from going under the tile
-    if (size < minLength) {
-      setDegrees(getBearing(startPoint, p));
-      setSize(minLength);
+    if (size < props.minLength) {
+      setDegrees(getBearing(props.startPoint, p));
+      setSize(props.minLength);
     } else {
-      setDegrees(getBearing(startPoint, p));
-      setSize(getDistance(startPoint, p));
+      setDegrees(getBearing(props.startPoint, p));
+      setSize(getDistance(props.startPoint, p));
     }
+
+    handleOverlappingTiles(end, tilesCtx, props.tileInstance.model.id);
   };
 
   const handleConnDragStop = () => {
@@ -42,13 +46,13 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
     setInteractionCtx(interactionCtx);
   };
 
-  const textCoord = getTextCoord(startPoint, end, size);
+  const textCoord = getTextCoord(props.startPoint, end, size);
 
   return (
     <g>
       <line
-        x1={startPoint.x}
-        y1={startPoint.y}
+        x1={props.startPoint.x}
+        y1={props.startPoint.y}
         x2={end.x}
         y2={end.y}
         stroke="#000000"
@@ -59,7 +63,7 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
         fontSize={24}
         fill="#000000"
       >
-        {model.caption}
+        {props.model.caption}
       </text>
       <Draggable
         position={end}
@@ -79,6 +83,23 @@ export default function ConnectorLine({ startPoint, model, initDegrees, minLengt
       </Draggable>
     </g>
   );
+}
+
+function handleOverlappingTiles(connPoint: Point2D, tiles: TileInstanceType[], ignoreTileId: string) {
+  let found = false;
+  for (const t of tiles) {
+    const tPoint = {
+      x: t.x,
+      y: t.y
+    };
+    if (!found && t.model.id != ignoreTileId && isRectOverlap(connPoint, nodeSize, nodeSize, tPoint, t.width, t.height)) {
+      // Multiple tiles can overlap, only match with the top-most on canvas
+      t.isConnectorHovering = true;
+      found = true;
+    } else {
+      t.isConnectorHovering = false;
+    }
+  }
 }
 
 function calculateConnectorEndPoint(startPoint: Point2D, degrees: number, distance: number): Point2D {

@@ -21,6 +21,10 @@ export const BasicTiles: TileBlueprintType[] = [
       fill: "#ffffa6",
       stroke: "#000000",
       strokeWidth: 1
+    },
+    hoverAttributes: {
+      stroke: "#00ff00",
+      strokeWidth: 4
     }
   }
 ];
@@ -35,6 +39,10 @@ export const ControlTiles: TileBlueprintType[] = [
       fill: "#d1f4ff",
       stroke: "#000000",
       strokeWidth: 1
+    },
+    hoverAttributes: {
+      stroke: "#00ff00",
+      strokeWidth: 4
     }
   },
   {
@@ -46,6 +54,10 @@ export const ControlTiles: TileBlueprintType[] = [
       fill: "#abffa1",
       stroke: "#000000",
       strokeWidth: 1
+    },
+    hoverAttributes: {
+      stroke: "#00ff00",
+      strokeWidth: 4
     }
   },
   {
@@ -57,6 +69,10 @@ export const ControlTiles: TileBlueprintType[] = [
       fill: "#ff9e8c",
       stroke: "#000000",
       strokeWidth: 1
+    },
+    hoverAttributes: {
+      stroke: "#00ff00",
+      strokeWidth: 4
     }
   }
 ];

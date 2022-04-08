@@ -32,6 +32,11 @@ export type TileBlueprintType = {
     fill?: string,
     stroke?: string,
     strokeWidth?: number
+  },
+  hoverAttributes?: {
+    fill?: string,
+    stroke?: string,
+    strokeWidth?: number
   }
 }
 
@@ -42,7 +47,8 @@ export type TileInstanceType = {
   x: number,
   y: number,
   model: ProgramObject,
-  blueprint: TileBlueprintType
+  blueprint: TileBlueprintType,
+  isConnectorHovering?: boolean
 }
 
 export type TileProps = {
@@ -53,6 +59,7 @@ export type TileProps = {
 
 export type ConnectorProps = {
   model: Connector,
+  tileInstance: TileInstanceType,
   startPoint: Point2D,
   initDegrees: number,
   minLength: number

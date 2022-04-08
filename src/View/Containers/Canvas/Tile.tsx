@@ -26,6 +26,7 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
           <ConnectorLine
             key={k}
             model={conn}
+            tileInstance={instance}
             startPoint={{
               x: instance.x + instance.width / 2,
               y: instance.y + instance.height / 2
@@ -42,11 +43,17 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
         onStop={props.onTileDragEnd}
         scale={posCtx.zoom}
       >
-        <g style={{ cursor: "pointer"}}>
+        <g style={{ cursor: "pointer" }}>
           <rect
             width={instance.width}
             height={instance.height}
             {...instance.blueprint?.attributes}
+            stroke={instance.isConnectorHovering ?
+              instance.blueprint.hoverAttributes?.stroke :
+              instance.blueprint.attributes?.stroke}
+            strokeWidth={instance.isConnectorHovering ?
+              instance.blueprint.hoverAttributes?.strokeWidth :
+              instance.blueprint.attributes?.strokeWidth}
           />
           <text
             transform={`translate(${instance.width / 2}, ${instance.height * 0.75})`}
