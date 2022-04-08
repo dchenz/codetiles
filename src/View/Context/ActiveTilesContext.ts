@@ -7,14 +7,12 @@ import { TileInstanceType } from "../../types";
 
 const contextState = {
   tilesCtx: [],
-  setTilesCtx: (_: TilesType[]) => { _ == _; }
+  setTilesCtx: (_: TileInstanceType[]) => { _ == _; }
 };
 
-export const TilesContext = createContext<TilesCtxType>(contextState);
+export const TilesContext = createContext<ActiveTilesCtxType>(contextState);
 
-export type TilesType = TileInstanceType;
-
-export type TilesCtxType = {
-  tilesCtx: TilesType[],
-  setTilesCtx: (_: TilesType[]) => void
+export type ActiveTilesCtxType = {
+  tilesCtx: TileInstanceType[],
+  setTilesCtx: (_: TileInstanceType[]) => void
 }

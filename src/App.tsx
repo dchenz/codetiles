@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import { TileInstanceType } from "./types";
 import MouseTracker from "./View/Components/MouseTracker";
 import { Canvas } from "./View/Containers/Canvas";
 import { Menu } from "./View/Containers/Menu";
-import { TilesContext, TilesType } from "./View/Context/ActiveTilesContext";
+import { TilesContext } from "./View/Context/ActiveTilesContext";
 import { GridPositionContext, GridPositionType } from "./View/Context/GridPositionContext";
 import { InteractionContext, InteractionType } from "./View/Context/InteractionContext";
 
@@ -14,7 +15,7 @@ export default function App(): JSX.Element {
     y: 0,
     zoom: 1
   });
-  const [tilesCtx, setTilesCtx] = useState<TilesType[]>([]);
+  const [tilesCtx, setTilesCtx] = useState<TileInstanceType[]>([]);
   const [interactionCtx, setInteractionCtx] = useState<InteractionType>({
     menu: {
       selectedTile: null

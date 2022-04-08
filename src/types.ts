@@ -45,6 +45,10 @@ export type TileInstanceType = {
   blueprint: TileBlueprintType
 }
 
+export type TileProps = {
+  instance: TileInstanceType
+}
+
 export type ConnectorProps = {
   model: Connector,
   startPoint: Point2D,

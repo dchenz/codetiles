@@ -1,36 +1,31 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Draggable, { DraggableData } from "react-draggable";
 import { ProgramObject } from "../../../Model/ProgramObject";
-import { Point2D, TileInstanceType } from "../../../types";
-import { TilesContext, TilesType } from "../../Context/ActiveTilesContext";
+import { TileInstanceType, TileProps } from "../../../types";
+import { TilesContext } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
 import ConnectorLine from "./ConnectorLine";
 
-
-
 const iconSize = 42;
 
-export default function Tile({ blueprint, ...props }: TileInstanceType): JSX.Element {
+export default function Tile({ instance, ...props }: TileProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { posCtx } = useContext(GridPositionContext);
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
-  const [coord, setCoord] = useState<Point2D>({
-    x: props.x,
-    y: props.y
-  });
+  const ctx = tilesCtx.filter(x => x.model.id == instance.model.id)[0];
 
   const handleTileDragStart = () => {
     interactionCtx.canvas.isDraggingTile = true;
     setInteractionCtx(interactionCtx);
-    setTilesCtx(putTileOnTop(tilesCtx, props.model));
+    setTilesCtx(putTileOnTop(tilesCtx, instance.model));
   };
 
   const handleTileDrag = (_: unknown, data: DraggableData) => {
-    setCoord({
-      x: data.x,
-      y: data.y
-    });
+    // ctx points to object inside context's array
+    ctx.x = data.x;
+    ctx.y = data.y;
+    setTilesCtx(tilesCtx);
   };
 
   const handleTileDragStop = () => {
@@ -39,29 +34,29 @@ export default function Tile({ blueprint, ...props }: TileInstanceType): JSX.Ele
   };
 
   const centerPointAbs = {
-    x: coord.x + props.width / 2,
-    y: coord.y + props.height / 2
+    x: ctx.x + instance.width / 2,
+    y: ctx.y + instance.height / 2
   };
 
   const centerPointRel = {
-    x: props.width / 2,
-    y: props.height / 2
+    x: instance.width / 2,
+    y: instance.height / 2
   };
 
   return (
     <React.Fragment>
       {
-        props.model.outboundConnectors.map((conn, k) =>
+        instance.model.outboundConnectors.map((conn, k) =>
           <ConnectorLine
             key={k}
             model={conn}
             startPoint={centerPointAbs}
-            initDegrees={k * 360 / props.model.outboundConnectors.length + 90}
+            initDegrees={k * 360 / instance.model.outboundConnectors.length + 90}
           />
         )
       }
       <Draggable
-        defaultPosition={coord}
+        defaultPosition={{ x: ctx.x, y: ctx.y }}
         onStart={handleTileDragStart}
         onDrag={handleTileDrag}
         onStop={handleTileDragStop}
@@ -69,22 +64,22 @@ export default function Tile({ blueprint, ...props }: TileInstanceType): JSX.Ele
       >
         <g style={{ cursor: "pointer"}}>
           <rect
-            width={props.width}
-            height={props.height}
-            {...blueprint?.attributes}
+            width={instance.width}
+            height={instance.height}
+            {...instance.blueprint?.attributes}
           />
           <text
-            transform={`translate(${centerPointRel.x}, ${props.height * 0.75})`}
+            transform={`translate(${centerPointRel.x}, ${instance.height * 0.75})`}
             textAnchor="middle"
             fontSize={16}
             fill="#000000"
           >
-            {blueprint.displayName}
+            {instance.blueprint.displayName}
           </text>
           {
-            React.cloneElement(blueprint.icon, {
+            React.cloneElement(instance.blueprint.icon, {
               size: iconSize,
-              transform: `translate(${centerPointRel.x - iconSize / 2}, ${props.height * 0.25})`
+              transform: `translate(${centerPointRel.x - iconSize / 2}, ${instance.height * 0.25})`
             })
           }
         </g>
@@ -95,7 +90,7 @@ export default function Tile({ blueprint, ...props }: TileInstanceType): JSX.Ele
 
 
 
-function putTileOnTop(tilesCtx: TilesType[], model: ProgramObject): TilesType[] {
+function putTileOnTop(tilesCtx: TileInstanceType[], model: ProgramObject): TileInstanceType[] {
   let idx = 0;
   for (let i = 0; i < tilesCtx.length; i++) {
     if (tilesCtx[i].model.id == model.id) {

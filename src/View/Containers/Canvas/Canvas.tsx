@@ -77,7 +77,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
       </defs>
       <rect width="100%" height="100%" fill="url(#grid)" />
       {
-        tilesCtx.map(ctx => <Tile key={ctx.model.id} {...ctx} />)
+        tilesCtx.map(ctx => <Tile key={ctx.model.id} instance={ctx} />)
       }
       {
         menu.selectedTile != null ?
