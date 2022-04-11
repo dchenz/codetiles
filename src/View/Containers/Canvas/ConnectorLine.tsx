@@ -57,11 +57,16 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
     setInteractionCtx(interactionCtx);
     // Check if connector overlaps any tiles on drag stop
     const potentialConnectedTile = getOverlappingTile(tilesCtx);
+    let connectSuccess = false;
     if (potentialConnectedTile) {
       // Attempt connection with tile
-      props.model.sendConnection(potentialConnectedTile.model);
+      connectSuccess = props.model.sendConnection(potentialConnectedTile.model);
       // Stop hovering
       potentialConnectedTile.isConnectorHovering = false;
+    }
+    if (!connectSuccess) {
+      setDegrees(props.initDegrees);
+      setSize(props.minLength);
     }
   };
 

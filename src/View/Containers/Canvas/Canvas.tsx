@@ -7,6 +7,8 @@ import { CanvasProps, TileInstanceType } from "../../../types";
 import { InteractionContext } from "../../Context/InteractionContext";
 import "./styles.css";
 import { ProgramObject } from "../../../Model/ProgramObject";
+import ConnectorLine from "./ConnectorLine";
+import { getHypotenuse } from "./mathutils";
 
 let observer: MutationObserver | null = null;
 let ofsX = 0; // Width of canvas outside of viewport
@@ -77,6 +79,23 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
         </pattern>
       </defs>
       <rect width="100%" height="100%" fill="url(#grid)" />
+      {
+        tilesCtx.map(ctx =>
+          ctx.model.outboundConnectors.map((conn, k) =>
+            <ConnectorLine
+              key={conn.id}
+              model={conn}
+              tileInstance={ctx}
+              startPoint={{
+                x: ctx.x + ctx.width / 2,
+                y: ctx.y + ctx.height / 2
+              }}
+              initDegrees={k * 360 / ctx.model.outboundConnectors.length + 90}
+              minLength={getHypotenuse(ctx.width / 2, ctx.height / 2)}
+            />
+          )
+        )
+      }
       {
         tilesCtx.map(ctx =>
           <Tile
