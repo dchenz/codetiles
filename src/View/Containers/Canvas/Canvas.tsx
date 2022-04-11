@@ -29,7 +29,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
 
   const addTileOnCanvas = (tileType: string, coordX: number, coordY: number) => {
     const tmpl = getTileTemplate(tileType);
-    const tModel = new tmpl.modelClass();
+    const tModel = new tmpl.modelClass(tmpl.displayName);
     const ctx = {
       width: tileSize,
       height: tileSize,

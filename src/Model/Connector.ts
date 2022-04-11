@@ -1,18 +1,16 @@
-import { v4 as uuid } from "uuid";
 import { ProgramObject } from "./ProgramObject";
-import { Serializable } from "./Serializable";
 
-export class Connector implements Serializable {
+export class Connector {
 
   id: string;
   targetId: string | null;
   caption: string;
   parentTile: ProgramObject;
 
-  constructor(parentTile: ProgramObject, caption: string) {
-    this.id = uuid();
+  constructor(parentTile: ProgramObject, name: string, caption?: string) {
+    this.id = name;
     this.targetId = null;
-    this.caption = caption;
+    this.caption = caption ?? "";
     this.parentTile = parentTile;
   }
 
@@ -22,14 +20,6 @@ export class Connector implements Serializable {
       this.targetId = targetTile.id;
     }
     return isAccepted;
-  }
-
-  toObject(): Record<string, unknown> {
-    return {
-      "id": this.id,
-      "target_id": this.targetId,
-      "caption": this.caption
-    };
   }
 
 }

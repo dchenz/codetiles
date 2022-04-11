@@ -3,20 +3,21 @@ import { ProgramObject } from "./ProgramObject";
 export class Loop extends ProgramObject {
 
   condition: string;
-  nestedScope: ProgramObject[];
 
-  constructor() {
-    super("loop");
+  constructor(title?: string) {
+    super("loop", title ?? "");
     this.condition = "";
-    this.nestedScope = [];
-    this.addConnector("REPEAT");
-    this.addConnector("LEAVE");
+    this.addConnector("repeat", "REPEAT");
+    this.addConnector("leave", "LEAVE");
   }
 
   toObject(): Record<string, unknown> {
     const objRep = super.toObject();
-    objRep["condition"] = this.condition;
-    objRep["nested_scope"] = this.nestedScope.map(s => s.toObject());
+    objRep["while"] = {
+      "condition": this.condition,
+      "repeat": super.getOutboundConnector("repeat")?.targetId,
+      "leave": super.getOutboundConnector("leave")?.targetId
+    };
     return objRep;
   }
 

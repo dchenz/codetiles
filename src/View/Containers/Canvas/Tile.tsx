@@ -43,7 +43,7 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
           fontSize={16}
           fill="#000000"
         >
-          {instance.blueprint.displayName}
+          {instance.model.title}
         </text>
         {
           React.cloneElement(instance.blueprint.icon, {

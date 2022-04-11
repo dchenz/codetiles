@@ -3,14 +3,20 @@ import { ProgramObject } from "./ProgramObject";
 
 export class EntryPoint extends ProgramObject {
 
-  constructor() {
-    super("entry");
-    this.addConnector("");
+  constructor(title?: string) {
+    super("entry", title ?? "");
+    this.addConnector("next", "");
   }
 
   receiveConnection(_: ProgramObject): boolean {
     // Nothing can connect to entry tile
     return false;
+  }
+
+  toObject(): Record<string, unknown> {
+    const objRep = super.toObject();
+    objRep["next"] = super.getOutboundConnector("next")?.targetId;
+    return objRep;
   }
 
 }

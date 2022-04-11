@@ -27,7 +27,7 @@ export type TileBlueprintType = {
   icon: JSX.Element,                  // Tile icon
   displayName: string,                // Text in menu list and on canvas
   itemType: string,                   // Must be the same as type in model's class
-  modelClass: (new () => ProgramObject),   // Constructor to instantiate new model
+  modelClass: (new (title?: string) => ProgramObject),   // Constructor to instantiate new model
   attributes?: {
     fill?: string,
     stroke?: string,

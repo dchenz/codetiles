@@ -9,19 +9,17 @@ export abstract class ProgramObject implements Serializable {
   title: string;
   inboundConnectors: string[];
   outboundConnectors: Connector[];
-  returnType: string;
 
-  constructor(type: string) {
+  constructor(type: string, title: string) {
     this.id = uuid();
     this.type = type;
-    this.title = "";
+    this.title = title;
     this.inboundConnectors = [];
     this.outboundConnectors = [];
-    this.returnType = "null";
   }
 
-  addConnector(caption: string) {
-    this.outboundConnectors.push(new Connector(this, caption));
+  addConnector(name: string, caption?: string) {
+    this.outboundConnectors.push(new Connector(this, name, caption ?? ""));
   }
 
   // Assumption: A tile can only join one connector to a particular tile
@@ -33,14 +31,15 @@ export abstract class ProgramObject implements Serializable {
     return true;
   }
 
+  getOutboundConnector(name: string): Connector | null {
+    return this.outboundConnectors.find(x => x.id == name) ?? null;
+  }
+
   toObject(): Record<string, unknown> {
     return {
       "id": this.id,
       "type": this.type,
-      "title": this.title,
-      "inbound_connectors": this.inboundConnectors,
-      "outbound_connectors": this.outboundConnectors.map(c => c.toObject()),
-      "return_type": this.returnType
+      "title": this.title
     };
   }
 
