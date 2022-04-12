@@ -36,7 +36,8 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
       x: coordX - tileSize / 2,
       y: coordY - tileSize / 2,
       model: tModel,
-      blueprint: tmpl
+      blueprint: tmpl,
+      priority: 50
     };
     setTilesCtx([...tilesCtx, ctx]);
     // Clear selection on placement
@@ -83,7 +84,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
         tilesCtx.map(ctx =>
           ctx.model.outboundConnectors.map((conn, k) =>
             <ConnectorLine
-              key={conn.id}
+              key={ctx.model.id + k}
               model={conn}
               tileInstance={ctx}
               startPoint={{
@@ -97,7 +98,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
         )
       }
       {
-        tilesCtx.map(ctx =>
+        tilesCtx.sort((a, b) => a.priority > b.priority ? -1 : 1).map(ctx =>
           <Tile
             key={ctx.model.id}
             instance={ctx}
@@ -131,17 +132,14 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
 }
 
 function putTileOnTop(tilesCtx: TileInstanceType[], model: ProgramObject): TileInstanceType[] {
-  let idx = 0;
   for (let i = 0; i < tilesCtx.length; i++) {
     if (tilesCtx[i].model.id == model.id) {
-      idx = i;
-      break;
+      tilesCtx[i].priority = 50;
+    } else {
+      tilesCtx[i].priority = 100;
     }
   }
-  const tiles = [...tilesCtx];
-  const t = tiles.splice(idx, 1)[0];
-  tiles.push(t);
-  return tiles;
+  return tilesCtx;
 }
 
 export function updateCanvasPositionState(updateState: (_: GridPositionType) => void, cellSize: number) {

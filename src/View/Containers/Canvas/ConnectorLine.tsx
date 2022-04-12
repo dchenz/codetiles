@@ -14,8 +14,10 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
   const { tilesCtx } = useContext(TilesContext);
   const { posCtx } = useContext(GridPositionContext);
-  const [degrees, setDegrees] = useState(props.initDegrees);
-  const [size, setSize] = useState(props.minLength);
+  // eslint-disable-next-line prefer-const
+  let [degrees, setDegrees] = useState(props.initDegrees);
+  // eslint-disable-next-line prefer-const
+  let [size, setSize] = useState(props.minLength);
 
   let end: Point2D;
   if (props.model.targetId == null) {
@@ -28,6 +30,8 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
     };
     // Degrees and size cannot be set here
     // These need to be set if connector is removed
+    degrees = getBearing(props.startPoint, end);
+    size = getDistance(props.startPoint, end);
   }
 
   const handleConnDragStart = () => {
@@ -40,12 +44,11 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
       x: data.x,
       y: data.y
     };
+    setDegrees(getBearing(props.startPoint, p));
     // Stop the node from going under the tile
     if (size < props.minLength) {
-      setDegrees(getBearing(props.startPoint, p));
       setSize(props.minLength);
     } else {
-      setDegrees(getBearing(props.startPoint, p));
       setSize(getDistance(props.startPoint, p));
     }
 

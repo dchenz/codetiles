@@ -48,7 +48,8 @@ export type TileInstanceType = {
   y: number,
   model: ProgramObject,
   blueprint: TileBlueprintType,
-  isConnectorHovering?: boolean
+  isConnectorHovering?: boolean,
+  priority: number
 }
 
 export type TileProps = {

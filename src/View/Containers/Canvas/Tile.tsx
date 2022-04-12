@@ -11,7 +11,6 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
   const { tilesCtx, setTilesCtx } = useContext(TilesContext);
 
   const handleTileDrag = (_: unknown, data: DraggableData) => {
-    // ctx points to object inside context's array
     instance.x = data.x;
     instance.y = data.y;
     setTilesCtx(tilesCtx);
