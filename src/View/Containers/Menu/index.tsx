@@ -1,17 +1,28 @@
 import fileDownload from "js-file-download";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { TileInstanceType } from "../../../types";
 import { TilesContext } from "../../Context/ActiveTilesContext";
+import { EditorContext } from "../../Context/EditorContext";
 import "./styles.css";
 import { TileMenuTabs } from "./TileMenuTabs";
 import { ToggleClose } from "./ToggleClose";
 
 export function Menu(): JSX.Element {
   const { tilesCtx } = useContext(TilesContext);
+  const { editorCtx, setEditorCtx } = useContext(EditorContext);
+
+  const onMenuToggle = (isClosed: boolean) => {
+    if (!isClosed) {
+      // Close editor on menu open
+      editorCtx.editorState = null;
+    }
+    editorCtx.menuClosed = isClosed;
+    setEditorCtx(editorCtx);
+  };
+
   // Clear selection on drawer collapse toggle
-  const [isClosed, setClosed] = useState<boolean>(false);
-  const cls = isClosed ? "collapse-left-closed" : "collapse-left-open";
+  const cls = editorCtx.menuClosed ? "collapse-left-closed" : "collapse-left-open";
   return (
     <React.Fragment>
       <Container className={"left-drawer-container d-flex flex-column " + cls}>
@@ -32,7 +43,10 @@ export function Menu(): JSX.Element {
             </Button>
           </Col>
         </Row>
-        <ToggleClose isClosed={isClosed} setClosed={setClosed} />
+        <ToggleClose
+          isClosed={editorCtx.menuClosed}
+          setClosed={() => onMenuToggle(!editorCtx.menuClosed)}
+        />
       </Container>
     </React.Fragment>
   );

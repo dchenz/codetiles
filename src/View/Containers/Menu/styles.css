@@ -8,7 +8,7 @@
     background-color: #ffffff;
     border-right: solid 2.5px lightgray;
     z-index: 999;
-    transition: margin-left 500ms;
+    transition: margin-left 300ms;
     user-select: none;
 }
 

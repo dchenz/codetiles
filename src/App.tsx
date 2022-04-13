@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { TileInstanceType } from "./types";
 import MouseTracker from "./View/Components/MouseTracker";
 import { Canvas } from "./View/Containers/Canvas";
+import { Editor } from "./View/Containers/Editor";
 import { Menu } from "./View/Containers/Menu";
 import { TilesContext } from "./View/Context/ActiveTilesContext";
+import { EditorContext, EditorType } from "./View/Context/EditorContext";
 import { GridPositionContext, GridPositionType } from "./View/Context/GridPositionContext";
 import { InteractionContext, InteractionType } from "./View/Context/InteractionContext";
 
@@ -28,13 +30,20 @@ export default function App(): JSX.Element {
       isDraggingConnector: false
     }
   });
+  const [editorCtx, setEditorCtx] = useState<EditorType>({
+    menuClosed: true,
+    editorState: null
+  });
   return (
     <InteractionContext.Provider value={{ interactionCtx, setInteractionCtx }}>
       <TilesContext.Provider value={{ tilesCtx, setTilesCtx }}>
         <GridPositionContext.Provider value={{ posCtx, setPosCtx }}>
           <MouseTracker />
-          <Menu />
-          <Canvas cellSize={25} rowCount={100} columnCount={200} />
+          <EditorContext.Provider value={{ editorCtx, setEditorCtx }}>
+            <Menu />
+            <Editor />
+            <Canvas cellSize={25} rowCount={100} columnCount={200} />
+          </EditorContext.Provider>
         </GridPositionContext.Provider>
       </TilesContext.Provider>
     </InteractionContext.Provider>
