@@ -22,6 +22,10 @@ export class Connector {
     return isAccepted;
   }
 
+  testSendConnection(targetTile: ProgramObject): boolean {
+    return targetTile._testReceiveConnection(targetTile);
+  }
+
   disconnect(targetTile: ProgramObject) {
     if (this.targetId == null) {
       return;

@@ -9,11 +9,15 @@ import { TileBlueprintType } from "../../types";
 
 const iconSize = 24;
 
-const defaultHoverAttributes = {
+const defaultHoverConnectableAttrs = {
   stroke: "#00ff00",
   strokeWidth: 4
 };
-const defaultSelectedAttributes = {
+const defaultHoverNotConnectableAttrs = {
+  stroke: "#ff0000",
+  strokeWidth: 4
+};
+const defaultSelectedAttrs = {
   stroke: "#0000ff",
   strokeWidth: 4
 };
@@ -29,8 +33,9 @@ export const BasicTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: defaultHoverAttributes,
-    selectedAttributes: defaultSelectedAttributes
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
   }
 ];
 
@@ -45,8 +50,9 @@ export const ControlTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: defaultHoverAttributes,
-    selectedAttributes: defaultSelectedAttributes
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
   },
   {
     icon: <ArrowRepeat size={iconSize} />,
@@ -58,8 +64,9 @@ export const ControlTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: defaultHoverAttributes,
-    selectedAttributes: defaultSelectedAttributes
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
   },
   {
     icon: <StopBtn size={iconSize} />,
@@ -71,8 +78,9 @@ export const ControlTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: defaultHoverAttributes,
-    selectedAttributes: defaultSelectedAttributes
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
   }
 ];
 
@@ -86,8 +94,9 @@ const EntryPointTile: TileBlueprintType = {
     stroke: "#000000",
     strokeWidth: 1
   },
-  hoverAttributes: defaultHoverAttributes,
-  selectedAttributes: defaultSelectedAttributes
+  hoverConnectableAttributes: defaultHoverConnectableAttrs,
+  hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+  selectedAttributes: defaultSelectedAttrs
 };
 
 export function getTileTemplate(type: string): TileBlueprintType {

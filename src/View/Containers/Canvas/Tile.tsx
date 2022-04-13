@@ -19,8 +19,12 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
   };
 
   let extraAttributes;
-  if (instance.isConnectorHovering) {
-    extraAttributes = instance.blueprint.hoverAttributes;
+  if (instance.connectorHover != null) {
+    if (instance.connectorHover.connectable) {
+      extraAttributes = instance.blueprint.hoverConnectableAttributes;
+    } else {
+      extraAttributes = instance.blueprint.hoverNotConnectableAttributes;
+    }
   } else if (editorCtx.editorState?.id == instance.model.id) {
     extraAttributes = instance.blueprint.selectedAttributes;
   } else {

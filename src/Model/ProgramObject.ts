@@ -24,10 +24,18 @@ export abstract class ProgramObject implements Serializable {
 
   // Assumption: A tile can only join one connector to a particular tile
   _receiveConnection(fromTile: ProgramObject): boolean {
+    const connectable = this._testReceiveConnection(fromTile);
+    if (connectable) {
+      this.inboundConnectors.push(fromTile.id);
+    }
+    return connectable;
+  }
+
+  // This method should be overriden in child classes
+  _testReceiveConnection(fromTile: ProgramObject): boolean {
     if (this.inboundConnectors.includes(fromTile.id)) {
       return false;
     }
-    this.inboundConnectors.push(fromTile.id);
     return true;
   }
 

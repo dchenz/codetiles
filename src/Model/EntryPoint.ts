@@ -8,7 +8,7 @@ export class EntryPoint extends ProgramObject {
     this.addConnector("next", "");
   }
 
-  receiveConnection(_: ProgramObject): boolean {
+  _testReceiveConnection(_: ProgramObject): boolean {
     // Nothing can connect to entry tile
     return false;
   }

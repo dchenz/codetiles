@@ -36,7 +36,8 @@ export type TileBlueprintType = {
   itemType: string,                   // Must be the same as type in model's class
   modelClass: (new (title?: string) => ProgramObject),   // Constructor to instantiate new model
   attributes: TileSVGStyles,
-  hoverAttributes?: TileSVGStyles,
+  hoverConnectableAttributes?: TileSVGStyles,
+  hoverNotConnectableAttributes?: TileSVGStyles,
   selectedAttributes?: TileSVGStyles
 }
 
@@ -48,8 +49,12 @@ export type TileInstanceType = {
   y: number,
   model: ProgramObject,
   blueprint: TileBlueprintType,
-  isConnectorHovering?: boolean,
+  connectorHover: ConnectorHoverType | null,
   priority: number
+}
+
+type ConnectorHoverType = {
+  connectable: boolean
 }
 
 export type TileProps = {

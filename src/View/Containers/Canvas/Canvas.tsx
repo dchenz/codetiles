@@ -37,6 +37,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
       y: coordY - tileSize / 2,
       model: tModel,
       blueprint: tmpl,
+      connectorHover: null,
       priority: 50
     };
     setTilesCtx([...tilesCtx, ctx]);

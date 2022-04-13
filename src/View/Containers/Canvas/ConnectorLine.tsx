@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { DraggableData } from "react-draggable";
+import { ProgramObject } from "../../../Model/ProgramObject";
 import { ConnectorProps, Point2D, TileInstanceType } from "../../../types";
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
@@ -54,7 +55,7 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
       setSize(getDistance(props.startPoint, p));
     }
 
-    handleOverlappingTiles(end, tilesCtx, props.tileInstance.model.id);
+    handleOverlappingTiles(end, tilesCtx, props.tileInstance.model);
   };
 
   const handleConnDragStop = () => {
@@ -67,7 +68,7 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
       // Attempt connection with tile
       connectSuccess = props.model.sendConnection(potentialConnectedTile.model);
       // Stop hovering
-      potentialConnectedTile.isConnectorHovering = false;
+      potentialConnectedTile.connectorHover = null;
     }
     if (!connectSuccess) {
       setDegrees(props.initDegrees);
@@ -116,30 +117,27 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
   );
 }
 
-function handleOverlappingTiles(connPoint: Point2D, tiles: TileInstanceType[], ignoreTileId: string) {
+function handleOverlappingTiles(connPoint: Point2D, tiles: TileInstanceType[], ignoreTile: ProgramObject) {
   let found = false;
   for (const t of tiles) {
     const tPoint = {
       x: t.x,
       y: t.y
     };
-    if (!found && t.model.id != ignoreTileId && isRectOverlap(connPoint, nodeSize, nodeSize, tPoint, t.width, t.height)) {
+    if (!found && t.model.id != ignoreTile.id && isRectOverlap(connPoint, nodeSize, nodeSize, tPoint, t.width, t.height)) {
       // Multiple tiles can overlap, only match with the top-most on canvas
-      t.isConnectorHovering = true;
+      t.connectorHover = {
+        connectable: t.model._testReceiveConnection(ignoreTile)
+      };
       found = true;
     } else {
-      t.isConnectorHovering = false;
+      t.connectorHover = null;
     }
   }
 }
 
 function getOverlappingTile(tiles: TileInstanceType[]): TileInstanceType | null {
-  for (const t of tiles) {
-    if (t.isConnectorHovering) {
-      return t;
-    }
-  }
-  return null;
+  return tiles.find(x => x.connectorHover != null) ?? null;
 }
 
 function calculateConnectorEndPoint(startPoint: Point2D, degrees: number, distance: number): Point2D {
