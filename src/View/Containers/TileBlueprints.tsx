@@ -1,10 +1,10 @@
 import React from "react";
 import { ArrowRepeat, Box, Diagram2, PlayBtn, StopBtn } from "react-bootstrap-icons";
-import { Conditional } from "../../Model/Conditional";
-import { EntryPoint } from "../../Model/EntryPoint";
-import { ExitPoint } from "../../Model/ExitPoint";
-import { InitVariable } from "../../Model/InitVariable";
-import { Loop } from "../../Model/Loop";
+import { Conditional } from "../../Model/Tiles/Conditional";
+import { EntryPoint } from "../../Model/Tiles/EntryPoint";
+import { ExitPoint } from "../../Model/Tiles/ExitPoint";
+import { InitVariable } from "../../Model/Tiles/InitVariable";
+import { Loop } from "../../Model/Tiles/Loop";
 import { TileBlueprintType } from "../../types";
 
 const iconSize = 24;

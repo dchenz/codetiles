@@ -1,4 +1,4 @@
-import { ProgramObject } from "./ProgramObject";
+import { ProgramObject } from "../ProgramObject";
 
 export class Conditional extends ProgramObject {
 

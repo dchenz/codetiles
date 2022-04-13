@@ -9,6 +9,7 @@ export abstract class ProgramObject implements Serializable {
   title: string;
   inboundConnectors: string[];
   outboundConnectors: Connector[];
+  attributes: Record<string, string>;
 
   constructor(type: string, title: string) {
     this.id = uuid();
@@ -16,6 +17,11 @@ export abstract class ProgramObject implements Serializable {
     this.title = title;
     this.inboundConnectors = [];
     this.outboundConnectors = [];
+    this.attributes = {};
+  }
+
+  setAttribute(key: string, value: string) {
+    this.attributes[key] = value;
   }
 
   addConnector(name: string, caption?: string) {
@@ -56,7 +62,8 @@ export abstract class ProgramObject implements Serializable {
     return {
       "id": this.id,
       "type": this.type,
-      "title": this.title
+      "title": this.title,
+      "attributes": this.attributes
     };
   }
 
