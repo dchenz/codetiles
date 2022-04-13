@@ -1,10 +1,12 @@
 import React from "react";
-import { ArrowRepeat, Box, Diagram2, PlayBtn, StopBtn } from "react-bootstrap-icons";
+import { ArrowRepeat, Box, Braces, Diagram2, Display, PlayBtn, StopBtn } from "react-bootstrap-icons";
 import { Conditional } from "../../Model/Tiles/Conditional";
 import { EntryPoint } from "../../Model/Tiles/EntryPoint";
 import { ExitPoint } from "../../Model/Tiles/ExitPoint";
+import { FunctionDeclare } from "../../Model/Tiles/FunctionDeclare";
 import { InitVariable } from "../../Model/Tiles/InitVariable";
 import { Loop } from "../../Model/Tiles/Loop";
+import { PrintConsole } from "../../Model/Tiles/PrintConsole";
 import { TileBlueprintType } from "../../types";
 
 const iconSize = 24;
@@ -30,6 +32,20 @@ export const BasicTiles: TileBlueprintType[] = [
     modelClass: InitVariable,
     attributes: {
       fill: "#ffffa6",
+      stroke: "#000000",
+      strokeWidth: 1
+    },
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
+  },
+  {
+    icon: <Display size={iconSize} />,
+    displayName: "Print to console",
+    itemType: "print_console",
+    modelClass: PrintConsole,
+    attributes: {
+      fill: "#f2bdff",
       stroke: "#000000",
       strokeWidth: 1
     },
@@ -81,7 +97,21 @@ export const ControlTiles: TileBlueprintType[] = [
     hoverConnectableAttributes: defaultHoverConnectableAttrs,
     hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
     selectedAttributes: defaultSelectedAttrs
-  }
+  },
+  {
+    icon: <Braces size={iconSize} />,
+    displayName: "Declare function",
+    itemType: "function_declare",
+    modelClass: FunctionDeclare,
+    attributes: {
+      fill: "#ffe3bf",
+      stroke: "#000000",
+      strokeWidth: 1
+    },
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
+  },
 ];
 
 const EntryPointTile: TileBlueprintType = {
