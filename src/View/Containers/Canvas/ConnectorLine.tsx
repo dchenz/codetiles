@@ -109,7 +109,7 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
                 setSize(props.minLength);
               }
             }}
-            size={16}
+            size={nodeSize}
           />
       }
     </g>
