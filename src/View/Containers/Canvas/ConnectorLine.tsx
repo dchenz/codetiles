@@ -47,6 +47,7 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
       x: data.x,
       y: data.y
     };
+    console.log(p);
     setDegrees(getBearing(props.startPoint, p));
     // Stop the node from going under the tile
     if (size < props.minLength) {

@@ -28,7 +28,7 @@ export function Editor(): JSX.Element {
         </Col>
       </Row>
       {
-        Object.entries(tile.attributes).map(([k, v]) =>
+        Object.entries(tile.attributes).map(([k]) =>
           <Row key={k}>
             <Col>
               {k}

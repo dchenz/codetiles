@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { GridPositionContext, GridPositionType } from "../../Context/GridPositionContext";
-import { TilesContext } from "../../Context/ActiveTilesContext";
-import { getTileTemplate } from "../TileBlueprints";
-import Tile from "./Tile";
-import { CanvasProps, TileInstanceType } from "../../../types";
-import { InteractionContext } from "../../Context/InteractionContext";
-import "./styles.css";
 import { ProgramObject } from "../../../Model/ProgramObject";
+import { CanvasProps, TileInstanceType, TilePlacementType } from "../../../types";
+import { TilesContext } from "../../Context/ActiveTilesContext";
+import { GridPositionContext, GridPositionType } from "../../Context/GridPositionContext";
+import { InteractionContext } from "../../Context/InteractionContext";
+import { getTileTemplate } from "../TileBlueprints";
 import ConnectorLine from "./ConnectorLine";
 import { getHypotenuse } from "./mathutils";
+import "./styles.css";
+import Tile from "./Tile";
 
 let observer: MutationObserver | null = null;
 let ofsX = 0; // Width of canvas outside of viewport
@@ -27,28 +27,36 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
   const height = cellSize * rowCount;
   const tileSize = cellSize * 5;
 
-  const addTileOnCanvas = (tileType: string, coordX: number, coordY: number) => {
-    const tmpl = getTileTemplate(tileType);
-    const tModel = new tmpl.modelClass(tmpl.displayName);
-    const ctx = {
-      width: tileSize,
-      height: tileSize,
-      x: coordX - tileSize / 2,
-      y: coordY - tileSize / 2,
-      model: tModel,
-      blueprint: tmpl,
-      connectorHover: null,
-      priority: 50
-    };
-    setTilesCtx([...tilesCtx, ctx]);
+  const addTilesOnCanvas = (tiles: TilePlacementType[]): ProgramObject[] => {
+    const createdModels = [];
+    for (const t of tiles) {
+      const tmpl = getTileTemplate(t.tileType);
+      const tModel = new tmpl.modelClass(tmpl.displayName);
+      const ctx = {
+        width: tileSize,
+        height: tileSize,
+        x: t.x - tileSize / 2,
+        y: t.y - tileSize / 2,
+        model: tModel,
+        blueprint: tmpl,
+        connectorHover: null,
+        priority: 100
+      };
+      tilesCtx.push(ctx);
+      createdModels.push(tModel);
+    }
+    setTilesCtx(tilesCtx);
     // Clear selection on placement
     menu.selectedTile = null;
     setInteractionCtx({ menu, canvas });
+    return createdModels;
   };
 
   const onCanvasClick = () => {
     if (menu.selectedTile) {
-      addTileOnCanvas(menu.selectedTile, posCtx.x, posCtx.y);
+      addTilesOnCanvas([
+        { tileType: menu.selectedTile, x: posCtx.x, y: posCtx.y }
+      ]);
     }
   };
 
@@ -70,7 +78,11 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
       mY = e.clientY ?? 0;
       updateCanvasPositionState(setPosCtx, cellSize);
     });
-    addTileOnCanvas("entry", width / 2, height / 2);
+    const tiles = addTilesOnCanvas([
+      { tileType: "entry", x: width / 2 - tileSize * 2, y: height / 2 },
+      { tileType: "exit", x: width / 2 + tileSize * 2, y: height / 2 }
+    ]);
+    tiles[0].getOutboundConnector("next")?.sendConnection(tiles[1]);
   }, []);
 
   return (
@@ -99,7 +111,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
         )
       }
       {
-        tilesCtx.sort((a, b) => a.priority > b.priority ? -1 : 1).map(ctx =>
+        tilesCtx.sort((a, b) => a.priority < b.priority ? 1 : -1).map(ctx =>
           <Tile
             key={ctx.model.id}
             instance={ctx}

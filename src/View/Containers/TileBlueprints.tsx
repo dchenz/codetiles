@@ -1,6 +1,7 @@
 import React from "react";
-import { ArrowRepeat, Box, Braces, Diagram2, Display, PlayBtn, StopBtn } from "react-bootstrap-icons";
+import { ArrowRepeat, Box, Braces, Diagram2, Display, PauseBtn, PlayBtn, StopBtn } from "react-bootstrap-icons";
 import { Conditional } from "../../Model/Tiles/Conditional";
+import { EndScope } from "../../Model/Tiles/EndScope";
 import { EntryPoint } from "../../Model/Tiles/EntryPoint";
 import { ExitPoint } from "../../Model/Tiles/ExitPoint";
 import { FunctionDeclare } from "../../Model/Tiles/FunctionDeclare";
@@ -76,7 +77,7 @@ export const ControlTiles: TileBlueprintType[] = [
     itemType: "loop",
     modelClass: Loop,
     attributes: {
-      fill: "#abffa1",
+      fill: "#d1f4ff",
       stroke: "#000000",
       strokeWidth: 1
     },
@@ -105,6 +106,20 @@ export const ControlTiles: TileBlueprintType[] = [
     modelClass: FunctionDeclare,
     attributes: {
       fill: "#ffe3bf",
+      stroke: "#000000",
+      strokeWidth: 1
+    },
+    hoverConnectableAttributes: defaultHoverConnectableAttrs,
+    hoverNotConnectableAttributes: defaultHoverNotConnectableAttrs,
+    selectedAttributes: defaultSelectedAttrs
+  },
+  {
+    icon: <PauseBtn size={iconSize} />,
+    displayName: "End scope",
+    itemType: "end_scope",
+    modelClass: EndScope,
+    attributes: {
+      fill: "#ff9e8c",
       stroke: "#000000",
       strokeWidth: 1
     },

@@ -8,6 +8,12 @@ export type CanvasProps = {
   columnCount: number
 }
 
+export type TilePlacementType = {
+  tileType: string,
+  x: number,
+  y: number
+}
+
 export type Point2D = {
   x: number,
   y: number
