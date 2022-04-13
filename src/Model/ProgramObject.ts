@@ -23,12 +23,21 @@ export abstract class ProgramObject implements Serializable {
   }
 
   // Assumption: A tile can only join one connector to a particular tile
-  receiveConnection(fromTile: ProgramObject): boolean {
+  _receiveConnection(fromTile: ProgramObject): boolean {
     if (this.inboundConnectors.includes(fromTile.id)) {
       return false;
     }
     this.inboundConnectors.push(fromTile.id);
     return true;
+  }
+
+  _disconnect(fromTile: ProgramObject) {
+    const idx = this.inboundConnectors.indexOf(fromTile.id);
+    if (idx < 0) {
+      console.error("Tile id not found. Method _disconnect should be called from connector.");
+      throw 1;
+    }
+    this.inboundConnectors.splice(idx, 1);
   }
 
   getOutboundConnector(name: string): Connector | null {

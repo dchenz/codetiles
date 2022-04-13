@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
-import Draggable, { DraggableData } from "react-draggable";
+import { DraggableData } from "react-draggable";
 import { ConnectorProps, Point2D, TileInstanceType } from "../../../types";
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
 import { InteractionContext } from "../../Context/InteractionContext";
+import ConnectNode from "./ConnectNode";
+import ConnectorText from "./ConnectorText";
+import DisconnectNode from "./DisconnectNode";
 import { getBearing, getDistance, isRectOverlap } from "./mathutils";
 
 
-const nodeSize = 25;
-
+const nodeSize = 24;
 
 export default function ConnectorLine(props: ConnectorProps): JSX.Element {
   const { interactionCtx, setInteractionCtx } = useContext(InteractionContext);
@@ -73,8 +75,6 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
     }
   };
 
-  const textCoord = getTextCoord(props.startPoint, end, size);
-
   return (
     <g>
       <line
@@ -84,30 +84,34 @@ export default function ConnectorLine(props: ConnectorProps): JSX.Element {
         y2={end.y}
         stroke="#000000"
       />
-      <text
-        transform={`translate(${textCoord.x}, ${textCoord.y})`}
-        textAnchor="middle"
-        fontSize={24}
-        fill="#000000"
-      >
-        {props.model.caption}
-      </text>
-      <Draggable
-        position={end}
-        onStart={handleConnDragStart}
-        onDrag={handleConnDrag}
-        onStop={handleConnDragStop}
-        scale={posCtx.zoom}
-      >
-        <rect
-          style={{ cursor: "pointer" }}
-          x={nodeSize / -2}
-          y={nodeSize / -2}
-          width={nodeSize}
-          height={nodeSize}
-          fill="#000000"
-        />
-      </Draggable>
+      <ConnectorText
+        position={getTextCoord(props.startPoint, end, size)}
+        text={props.model.caption}
+      />
+      {
+        props.model.targetId == null ?
+          <ConnectNode
+            position={end}
+            onDragStart={handleConnDragStart}
+            onDrag={handleConnDrag}
+            onDragStop={handleConnDragStop}
+            zoom={posCtx.zoom}
+            size={nodeSize}
+          /> :
+          <DisconnectNode
+            position={calculateConnectorEndPoint(props.startPoint, degrees, size - props.tileInstance.width / 2 - 50)}
+            onClick={() => {
+              const t = tilesCtx.find(x => x.model.id == props.model.targetId);
+              if (t) {
+                props.model.disconnect(t.model);
+                // Set to initial size
+                setDegrees(props.initDegrees);
+                setSize(props.minLength);
+              }
+            }}
+            size={16}
+          />
+      }
     </g>
   );
 }

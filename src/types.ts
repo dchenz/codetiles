@@ -1,3 +1,4 @@
+import { DraggableData } from "react-draggable";
 import { Connector } from "./Model/Connector";
 import { ProgramObject } from "./Model/ProgramObject";
 
@@ -64,4 +65,24 @@ export type ConnectorProps = {
   startPoint: Point2D,
   initDegrees: number,
   minLength: number
+}
+
+export type ConnectorNodeProps = {
+  position: Point2D,
+  onDragStart: () => void,
+  onDrag: (_: unknown, data: DraggableData) => void,
+  onDragStop: () => void,
+  zoom: number,
+  size: number
+}
+
+export type DisconnectorNodeProps = {
+  position: Point2D,
+  onClick: () => void,
+  size: number
+}
+
+export type ConnectorTextProps = {
+  position: Point2D,
+  text: string
 }
