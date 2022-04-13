@@ -18,6 +18,15 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
     setTilesCtx(tilesCtx);
   };
 
+  let extraAttributes;
+  if (instance.isConnectorHovering) {
+    extraAttributes = instance.blueprint.hoverAttributes;
+  } else if (editorCtx.editorState?.id == instance.model.id) {
+    extraAttributes = instance.blueprint.selectedAttributes;
+  } else {
+    extraAttributes = {};
+  }
+
   return (
     <Draggable
       defaultPosition={{ x: instance.x, y: instance.y }}
@@ -35,12 +44,7 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
           width={instance.width}
           height={instance.height}
           {...instance.blueprint?.attributes}
-          stroke={instance.isConnectorHovering ?
-            instance.blueprint.hoverAttributes?.stroke :
-            instance.blueprint.attributes?.stroke}
-          strokeWidth={instance.isConnectorHovering ?
-            instance.blueprint.hoverAttributes?.strokeWidth :
-            instance.blueprint.attributes?.strokeWidth}
+          {...extraAttributes}
         />
         <text
           transform={`translate(${instance.width / 2}, ${instance.height * 0.75})`}

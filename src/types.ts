@@ -23,22 +23,21 @@ export type ToggleCloseProps = {
   setClosed: (_: boolean) => void
 }
 
+type TileSVGStyles = {
+  fill?: string,
+  stroke?: string,
+  strokeWidth?: number
+}
+
 // Blueprint for a tile
 export type TileBlueprintType = {
   icon: JSX.Element,                  // Tile icon
   displayName: string,                // Text in menu list and on canvas
   itemType: string,                   // Must be the same as type in model's class
   modelClass: (new (title?: string) => ProgramObject),   // Constructor to instantiate new model
-  attributes?: {
-    fill?: string,
-    stroke?: string,
-    strokeWidth?: number
-  },
-  hoverAttributes?: {
-    fill?: string,
-    stroke?: string,
-    strokeWidth?: number
-  }
+  attributes: TileSVGStyles,
+  hoverAttributes?: TileSVGStyles,
+  selectedAttributes?: TileSVGStyles
 }
 
 // Instance of a tile

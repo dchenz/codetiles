@@ -9,7 +9,14 @@ import { TileBlueprintType } from "../../types";
 
 const iconSize = 24;
 
-
+const defaultHoverAttributes = {
+  stroke: "#00ff00",
+  strokeWidth: 4
+};
+const defaultSelectedAttributes = {
+  stroke: "#0000ff",
+  strokeWidth: 4
+};
 
 export const BasicTiles: TileBlueprintType[] = [
   {
@@ -22,10 +29,8 @@ export const BasicTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: {
-      stroke: "#00ff00",
-      strokeWidth: 4
-    }
+    hoverAttributes: defaultHoverAttributes,
+    selectedAttributes: defaultSelectedAttributes
   }
 ];
 
@@ -40,10 +45,8 @@ export const ControlTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: {
-      stroke: "#00ff00",
-      strokeWidth: 4
-    }
+    hoverAttributes: defaultHoverAttributes,
+    selectedAttributes: defaultSelectedAttributes
   },
   {
     icon: <ArrowRepeat size={iconSize} />,
@@ -55,10 +58,8 @@ export const ControlTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: {
-      stroke: "#00ff00",
-      strokeWidth: 4
-    }
+    hoverAttributes: defaultHoverAttributes,
+    selectedAttributes: defaultSelectedAttributes
   },
   {
     icon: <StopBtn size={iconSize} />,
@@ -70,10 +71,8 @@ export const ControlTiles: TileBlueprintType[] = [
       stroke: "#000000",
       strokeWidth: 1
     },
-    hoverAttributes: {
-      stroke: "#00ff00",
-      strokeWidth: 4
-    }
+    hoverAttributes: defaultHoverAttributes,
+    selectedAttributes: defaultSelectedAttributes
   }
 ];
 
@@ -87,10 +86,8 @@ const EntryPointTile: TileBlueprintType = {
     stroke: "#000000",
     strokeWidth: 1
   },
-  hoverAttributes: {
-    stroke: "#000000",
-    strokeWidth: 1
-  }
+  hoverAttributes: defaultHoverAttributes,
+  selectedAttributes: defaultSelectedAttributes
 };
 
 export function getTileTemplate(type: string): TileBlueprintType {
