@@ -31,8 +31,9 @@ export default function App(): JSX.Element {
     }
   });
   const [editorCtx, setEditorCtx] = useState<EditorType>({
-    menuClosed: true,
-    editorState: null
+    editorState: null,
+    closing: false,
+    hasChanges: false
   });
   return (
     <InteractionContext.Provider value={{ interactionCtx, setInteractionCtx }}>

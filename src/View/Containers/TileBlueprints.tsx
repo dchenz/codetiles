@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowRepeat, Box, Braces, Diagram2, Display, PauseBtn, PlayBtn, StopBtn } from "react-bootstrap-icons";
 import { Conditional } from "../../Model/Tiles/Conditional";
 import { EndScope } from "../../Model/Tiles/EndScope";
-import { EntryPoint } from "../../Model/Tiles/EntryPoint";
+import { StartPoint } from "../../Model/Tiles/StartPoint";
 import { ExitPoint } from "../../Model/Tiles/ExitPoint";
 import { FunctionDeclare } from "../../Model/Tiles/FunctionDeclare";
 import { InitVariable } from "../../Model/Tiles/InitVariable";
@@ -129,11 +129,11 @@ export const ControlTiles: TileBlueprintType[] = [
   },
 ];
 
-const EntryPointTile: TileBlueprintType = {
+const StartPointTile: TileBlueprintType = {
   icon: <PlayBtn size={iconSize} />,
   displayName: "Start",
-  itemType: "entry",
-  modelClass: EntryPoint,
+  itemType: "start",
+  modelClass: StartPoint,
   attributes: {
     fill: "#ffffff",
     stroke: "#000000",
@@ -145,8 +145,8 @@ const EntryPointTile: TileBlueprintType = {
 };
 
 export function getTileTemplate(type: string): TileBlueprintType {
-  if (type == "entry") {
-    return EntryPointTile;
+  if (type == "start") {
+    return StartPointTile;
   }
   for (const t of ControlTiles) {
     if (t.itemType == type) {

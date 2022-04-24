@@ -1,4 +1,5 @@
 import { DraggableData } from "react-draggable";
+import { Attribute } from "./Model/Attributes/Attribute";
 import { Connector } from "./Model/Connector";
 import { ProgramObject } from "./Model/ProgramObject";
 
@@ -95,4 +96,15 @@ export type DisconnectorNodeProps = {
 export type ConnectorTextProps = {
   position: Point2D,
   text: string
+}
+
+export type AttributeFormProps = {
+  tile: ProgramObject,
+  onSave: () => void,
+  onCancel: () => void
+}
+
+export type AttributeFormGroupProps = {
+  attr: Attribute,
+  commitValue: (_: string) => void
 }

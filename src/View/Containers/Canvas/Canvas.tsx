@@ -79,7 +79,7 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
       updateCanvasPositionState(setPosCtx, cellSize);
     });
     const tiles = addTilesOnCanvas([
-      { tileType: "entry", x: width / 2 - tileSize * 2, y: height / 2 },
+      { tileType: "start", x: width / 2 - tileSize * 2, y: height / 2 },
       { tileType: "exit", x: width / 2 + tileSize * 2, y: height / 2 }
     ]);
     tiles[0].getOutboundConnector("next")?.sendConnection(tiles[1]);

@@ -1,13 +1,26 @@
+import { StringAttribute } from "../Attributes/StringAttribute";
 import { ProgramObject } from "../ProgramObject";
 
 
 export class InitVariable extends ProgramObject {
 
+  static instance = 0;
+
   constructor(title?: string) {
     super("variable_init", title ?? "");
     this.addConnector("next");
-    this.setAttribute("name", "");
-    this.setAttribute("value", "");
+    this.setAttribute(new StringAttribute("name", {
+      displayName: "Variable name",
+      initialValue: `v${InitVariable.instance}`,
+      validators: [
+        {
+          isValid: isValidVariableName,
+          errorMessage: "Invalid variable name"
+        }
+      ]
+    }));
+    this.setAttribute(new StringAttribute("value", { displayName: "Value" }));
+    InitVariable.instance++;
   }
 
   toObject(): Record<string, unknown> {
@@ -16,4 +29,8 @@ export class InitVariable extends ProgramObject {
     return objRep;
   }
 
+}
+
+function isValidVariableName(name: string): boolean {
+  return /^[A-Za-z_]\w*$/.test(name);
 }

@@ -1,4 +1,4 @@
-.left-drawer-container {
+.menu-container {
     width: 300px !important;
     height: 100vh;
     padding: 10px 0;
@@ -12,7 +12,7 @@
     user-select: none;
 }
 
-.left-drawer-container .toggle-collapse-btn {
+.menu-container .toggle-collapse-btn {
     width: 25px;
     height: 100px;
     background-color: lightgrey;
@@ -24,11 +24,11 @@
     cursor: pointer;
 }
 
-.collapse-left-open {
+.collapse-menu-open {
     margin-left: 0 !important;
 }
 
-.collapse-left-closed {
+.collapse-menu-closed {
     margin-left: -300px !important;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .tile-selected {
-    background-color: #ddebff !important;
+    background-color: #ddebff;
 }
 
 .tile-list-item:hover {

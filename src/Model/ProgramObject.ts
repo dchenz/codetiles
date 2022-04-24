@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import { Attribute } from "./Attributes/Attribute";
 import { Connector } from "./Connector";
 import { Serializable } from "./Serializable";
 
@@ -9,7 +10,7 @@ export abstract class ProgramObject implements Serializable {
   title: string;
   inboundConnectors: string[];
   outboundConnectors: Connector[];
-  attributes: Record<string, string>;
+  attributes: Record<string, Attribute>;
 
   constructor(type: string, title: string) {
     this.id = uuid();
@@ -20,8 +21,12 @@ export abstract class ProgramObject implements Serializable {
     this.attributes = {};
   }
 
-  setAttribute(key: string, value: string) {
-    this.attributes[key] = value;
+  getAttributes() {
+    return Object.values(this.attributes);
+  }
+
+  setAttribute(attr: Attribute) {
+    this.attributes[attr.id] = attr;
   }
 
   addConnector(name: string, caption?: string) {
@@ -59,12 +64,16 @@ export abstract class ProgramObject implements Serializable {
   }
 
   toObject(): Record<string, unknown> {
-    return {
+    const objRep: Record<string, unknown> = {
       "id": this.id,
       "type": this.type,
-      "title": this.title,
-      "attributes": this.attributes
+      "title": this.title
     };
+    if (this.getAttributes().length > 0) {
+      const attrs = Object.fromEntries(this.getAttributes().map((a) => [a.id, a.value]));
+      objRep["attributes"] = attrs;
+    }
+    return objRep;
   }
 
 }

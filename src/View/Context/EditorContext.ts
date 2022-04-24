@@ -3,8 +3,9 @@ import { ProgramObject } from "../../Model/ProgramObject";
 
 const contextState = {
   editorCtx: {
-    menuClosed: true,
-    editorState: null
+    editorState: null,
+    closing: false,
+    hasChanges: false
   },
   setEditorCtx: (_: EditorType) => { _ == _; }
 };
@@ -17,6 +18,7 @@ export type EditorCtxType = {
 }
 
 export type EditorType = {
-  menuClosed: boolean,
-  editorState: ProgramObject | null
+  editorState: ProgramObject | null,
+  closing: boolean,
+  hasChanges: boolean
 }

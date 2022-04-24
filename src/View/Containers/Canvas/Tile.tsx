@@ -31,6 +31,20 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
     extraAttributes = {};
   }
 
+  const onTileClick = () => {
+    // Tile not clickable when editor is prompting "discard changes"
+    // Tile not clickable without attributes
+    if (!editorCtx.closing && instance.model.getAttributes().length > 0) {
+      // Show "discard changes" prompt in editor when clicking another tile
+      if (editorCtx.editorState != null && editorCtx.hasChanges) {
+        editorCtx.closing = true;
+      } else {
+        editorCtx.editorState = instance.model;
+      }
+      setEditorCtx(editorCtx);
+    }
+  };
+
   return (
     <Draggable
       defaultPosition={{ x: instance.x, y: instance.y }}
@@ -39,11 +53,7 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
       onStop={props.onTileDragEnd}
       scale={posCtx.zoom}
     >
-      <g style={{ cursor: "pointer" }} onClick={() => {
-        editorCtx.editorState = instance.model;
-        editorCtx.menuClosed = true;
-        setEditorCtx(editorCtx);
-      }}>
+      <g style={{ cursor: "pointer" }} onClick={onTileClick}>
         <rect
           width={instance.width}
           height={instance.height}

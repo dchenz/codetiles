@@ -1,15 +1,15 @@
 import { ProgramObject } from "../ProgramObject";
 
 
-export class EntryPoint extends ProgramObject {
+export class StartPoint extends ProgramObject {
 
   constructor(title?: string) {
-    super("entry", title ?? "");
+    super("start", title ?? "");
     this.addConnector("next", "");
   }
 
   _testReceiveConnection(_: ProgramObject): boolean {
-    // Nothing can connect to entry tile
+    // Nothing can connect to start tile
     return false;
   }
 
