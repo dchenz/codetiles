@@ -68,7 +68,7 @@ export default function AttributeForm(props: AttributeFormProps): JSX.Element {
 }
 
 function AttributeFormGroup({ attr, commitValue }: AttributeFormGroupProps): JSX.Element {
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [value, setValue] = useState<string>("");
 
   useEffect(() => {
@@ -87,18 +87,18 @@ function AttributeFormGroup({ attr, commitValue }: AttributeFormGroupProps): JSX
           type="text"
           value={value}
           onChange={(e) => {
-            setError(null);
+            // setError(null);
             setValue(e.target.value);
           }}
           onBlur={() => {
             commitValue(value);
-            setError(attr.validate(value));
+            // setError(attr.validate(value));
           }}
-          isInvalid={error != null}
+          // isInvalid={error != null}
         />
-        <Form.Control.Feedback type="invalid">
+        {/* <Form.Control.Feedback type="invalid">
           {error}
-        </Form.Control.Feedback>
+        </Form.Control.Feedback> */}
       </InputGroup>
     </Form.Group>
   );
