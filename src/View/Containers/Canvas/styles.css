@@ -1,4 +1,7 @@
-.canvas-area {
+#canvas-area {
     background-color: #f5f5f5;
 }
 
+.cursor-p {
+    cursor: pointer;
+}

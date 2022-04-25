@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { XCircle } from "react-bootstrap-icons";
 import { DisconnectorNodeProps } from "../../../types";
 import { EditorContext } from "../../Context/EditorContext";
+import "./styles.css";
 
 export default function DisconnectNode(props: DisconnectorNodeProps) {
   const {editorCtx} = useContext(EditorContext);
@@ -11,9 +12,8 @@ export default function DisconnectNode(props: DisconnectorNodeProps) {
       props.onClick();
     }
   };
-  const connCursorStyle = editorCtx.closing ? "default" : "pointer";
   return (
-    <g style={{ cursor: connCursorStyle }} onClick={onClick}>
+    <g className={editorCtx.closing ? undefined : "cursor-p"} onClick={onClick}>
       <rect
         x={props.position.x - props.size / 2}
         y={props.position.y - props.size / 2}

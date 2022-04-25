@@ -86,8 +86,15 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
   }, []);
 
   return (
-    <svg ref={ref} style={{ width, height }} className="canvas-area" onClick={onCanvasClick}>
+    <svg id="canvas-area" ref={ref} width={width} height={height} onClick={onCanvasClick}>
       <defs>
+        <style type="text/css">
+          text &#123;
+            font-family: &quot;Segoe UI&quot;, Arial, sans-serif;
+            text-anchor: middle;
+            fill: #000000;
+          &#125;
+        </style>
         <pattern id="grid" width={cellSize} height={cellSize} patternUnits="userSpaceOnUse">
           <path d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`} fill="none" stroke="gray" strokeWidth="1" />
         </pattern>

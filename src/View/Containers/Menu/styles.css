@@ -39,7 +39,7 @@
 }
 
 .tile-selected {
-    background-color: #ddebff;
+    background-color: #ddebff !important;
 }
 
 .tile-list-item:hover {
@@ -50,6 +50,6 @@
     overflow-y: scroll;
 }
 
-.export-button {
-    width: 100%;
+.menu-btn {
+    width: 50%;
 }

@@ -4,8 +4,10 @@ import { TileProps } from "../../../types";
 import { TilesContext } from "../../Context/ActiveTilesContext";
 import { EditorContext } from "../../Context/EditorContext";
 import { GridPositionContext } from "../../Context/GridPositionContext";
+import "./styles.css";
 
 const iconSize = 42;
+const displayFontSize = 16;
 
 export default function Tile({ instance, ...props }: TileProps): JSX.Element {
   const { posCtx } = useContext(GridPositionContext);
@@ -45,6 +47,13 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
     }
   };
 
+  const iconOffsetX = instance.width / 2 - iconSize / 2;
+  const iconOffsetY = instance.height * 0.2;
+
+  const textLines = breakDisplayName(instance.model.title);
+  const textOffsetX = instance.width / 2;
+  const textOffsetY = (instance.height + iconOffsetY + iconSize) / 2 - displayFontSize - 5 * (textLines.length - 1);
+
   return (
     <Draggable
       defaultPosition={{ x: instance.x, y: instance.y }}
@@ -53,7 +62,7 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
       onStop={props.onTileDragEnd}
       scale={posCtx.zoom}
     >
-      <g style={{ cursor: "pointer" }} onClick={onTileClick}>
+      <g className="cursor-p" onClick={onTileClick}>
         <rect
           width={instance.width}
           height={instance.height}
@@ -61,17 +70,23 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
           {...extraAttributes}
         />
         <text
-          transform={`translate(${instance.width / 2}, ${instance.height * 0.75})`}
-          textAnchor="middle"
-          fontSize={16}
-          fill="#000000"
+          // instance.height * 1.2 + iconSize --- this is set below for icon's offset
+          transform={`translate(${textOffsetX}, ${textOffsetY})`}
+          fontSize={displayFontSize}
         >
-          {instance.model.title}
+          {
+            textLines.map((line, k) =>
+              <tspan key={k} x="0" dy="1em">
+                {line}
+              </tspan>
+            )
+          }
         </text>
         {
           React.cloneElement(instance.blueprint.icon, {
             size: iconSize,
-            transform: `translate(${instance.width / 2 - iconSize / 2}, ${instance.height * 0.25})`
+            x: iconOffsetX,
+            y: iconOffsetY
           })
         }
       </g>
@@ -79,3 +94,17 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
   );
 }
 
+function breakDisplayName(text: string): string[] {
+  const lines: string[][] = [[]];
+  let ln = 0;
+  for (const word of text.split(" ")) {
+    const newLength = ln + word.length + (lines[lines.length - 1].length == 0 ? 0 : 1);
+    if (ln + newLength > 15) {
+      lines.push([]);
+      ln = 0;
+    }
+    lines[lines.length - 1].push(word);
+    ln += newLength;
+  }
+  return lines.map(x => x.join(" "));
+}

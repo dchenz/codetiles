@@ -108,3 +108,7 @@ export type AttributeFormGroupProps = {
   attr: Attribute,
   commitValue: (_: string) => void
 }
+
+export type ExportButtonProps = {
+  basename: string
+}
