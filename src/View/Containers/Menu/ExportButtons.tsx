@@ -64,7 +64,7 @@ function saveCanvasAsSvg(tiles: TileInstanceType[], basename: string, trimmed?: 
     background.setAttribute("x", cropped.x.toString());
     background.setAttribute("y", cropped.y.toString());
     saveSvg(svgElement, `${basename}.svg`, {
-      scale: 480 / cropped.height,
+      scale: 600 / cropped.height,
       top: cropped.top,
       left: cropped.left,
       width: cropped.width,
