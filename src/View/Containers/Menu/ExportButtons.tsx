@@ -14,9 +14,12 @@ export default function ExportButtons(props: ExportButtonProps) {
       overlay={<ExportOptionsPopup {...props} />}
       rootClose
     >
-      <Button variant="dark">
-        <Download size={24} />
-      </Button>
+      <div className="d-grid">
+        <Button variant="light" size="lg">
+          <Download size={24} /> &nbsp;
+          <span>Download</span>
+        </Button>
+      </div>
     </OverlayTrigger>
   );
 }
@@ -29,14 +32,14 @@ const ExportOptionsPopup = forwardRef((props: ExportButtonProps, ref: Ref<HTMLDi
       <Popover.Body>
         <Button
           className="mx-1"
-          variant="secondary"
+          variant="dark"
           onClick={() => saveCanvasAsSvg(tilesCtx, props.basename, true)}
         >
           SVG
         </Button>
         <Button
           className="mx-1"
-          variant="secondary"
+          variant="dark"
           onClick={() => saveCanvasAsJSON(tilesCtx, props.basename)}
         >
           JSON
