@@ -20,6 +20,23 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
     setTilesCtx(tilesCtx);
   };
 
+  const handleTileDragEnd = () => {
+    // Don't let tiles be dragged outside of canvas edges
+    if (instance.x < 0) {
+      instance.x = 0;
+    } else if (instance.x + instance.width >= props.maxX) {
+      instance.x = props.maxX - instance.width;
+    }
+    if (instance.y < 0) {
+      instance.y = 0;
+    } else if (instance.y + instance.height >= props.maxY) {
+      instance.y = props.maxY - instance.height;
+    }
+    setTilesCtx(tilesCtx);
+    props.onTileDragEnd();
+  };
+
+  // Connectors being hovered over current tile
   let extraAttributes;
   if (instance.connectorHover != null) {
     if (instance.connectorHover.connectable) {
@@ -56,10 +73,10 @@ export default function Tile({ instance, ...props }: TileProps): JSX.Element {
 
   return (
     <Draggable
-      defaultPosition={{ x: instance.x, y: instance.y }}
+      position={{ x: instance.x, y: instance.y }}
       onStart={props.onTileDragStart}
       onDrag={handleTileDrag}
-      onStop={props.onTileDragEnd}
+      onStop={handleTileDragEnd}
       scale={posCtx.zoom}
     >
       <g className="cursor-p" onClick={onTileClick}>

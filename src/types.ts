@@ -67,7 +67,9 @@ type ConnectorHoverType = {
 export type TileProps = {
   instance: TileInstanceType,
   onTileDragStart: () => void,
-  onTileDragEnd: () => void
+  onTileDragEnd: () => void,
+  maxX: number,
+  maxY: number
 }
 
 export type ConnectorProps = {

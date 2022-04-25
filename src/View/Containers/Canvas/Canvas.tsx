@@ -131,6 +131,8 @@ export default function Canvas({ rowCount, columnCount, cellSize }: CanvasProps)
               canvas.isDraggingTile = false;
               setInteractionCtx({ menu, canvas });
             }}
+            maxX={width}
+            maxY={height}
           />
         )
       }
