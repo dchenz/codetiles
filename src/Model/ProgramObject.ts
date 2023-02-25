@@ -53,8 +53,7 @@ export abstract class ProgramObject implements Serializable {
   _disconnect(fromTile: ProgramObject) {
     const idx = this.inboundConnectors.indexOf(fromTile.id);
     if (idx < 0) {
-      console.error("Tile id not found. Method _disconnect should be called from connector.");
-      throw 1;
+      throw new Error("Tile id not found. Method _disconnect should be called from connector.");
     }
     this.inboundConnectors.splice(idx, 1);
   }

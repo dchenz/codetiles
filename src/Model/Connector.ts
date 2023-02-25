@@ -31,8 +31,7 @@ export class Connector {
       return;
     }
     if (targetTile.id != this.targetId) {
-      console.error("Id doesn't match. Tile isn't connected to this connector.");
-      throw 1;
+      throw new Error("Id doesn't match. Tile isn't connected to this connector.");
     }
     targetTile._disconnect(this.parentTile);
     this.targetId = null;

@@ -158,6 +158,5 @@ export function getTileTemplate(type: string): TileBlueprintType {
       return t;
     }
   }
-  console.error("Unknown tile displayName: " + name);
-  throw 1;
+  throw new Error("Unknown tile displayName: " + name);
 }

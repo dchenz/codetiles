@@ -184,7 +184,7 @@ function updateContextOnMutation(mutations: MutationRecord[]) {
       const value = (mt.target as HTMLElement)?.style?.transform;
       const groups = cssStylePtn.exec(value);
       if (groups == null) {
-        throw 1;
+        throw new Error("regex group not found in canvas");
       }
       ofsX = parseFloat(groups[1]);
       ofsY = parseFloat(groups[3]);
